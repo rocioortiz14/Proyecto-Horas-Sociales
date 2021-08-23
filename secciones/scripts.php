@@ -21,3 +21,4 @@
 <!-- Alertas -->
 <script src="assets/js/sweet-alert/app.js"></script>
 <script src="assets/js/sweet-alert/sweetalert.min.js"></script>
+<script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" charset="utf-8"></script>

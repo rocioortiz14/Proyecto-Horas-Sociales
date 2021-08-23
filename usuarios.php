@@ -1,5 +1,9 @@
+<?php
+  // Requerimos el archivo de control de sesiones.
+  include 'configuracion/sesion.php';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <?php include 'secciones/cabezera.php'; // Incluimos los estilos a la plantilla ?>
   </head>
@@ -34,7 +38,9 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
-                
+                <a href="#" class="btn btn-primary btn-md"> <i class="fas fa-trash"></i> Agregar usuario</a>
+                <hr>
+                <div class="table-responsive" id="mostrarTablaUsuarios"></div>
               </div>
             </div>
           </div>
@@ -44,5 +50,6 @@
       </div>
     </div>
     <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
+    <script src="ajax/ajaxUsuario.js" charset="utf-8"></script>
   </body>
 </html>

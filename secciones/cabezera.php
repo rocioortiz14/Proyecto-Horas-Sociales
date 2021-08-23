@@ -29,4 +29,4 @@
 <link id="color" rel="stylesheet" href="assets/css/color-1.css" media="screen">
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
-
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">

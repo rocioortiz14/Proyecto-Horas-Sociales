@@ -1,6 +1,6 @@
 <?php
-// Iniciamos conexion 
-$parametroC = 'mysql:dbname=db_solecon;host=localhost;port=3307';
+// Iniciamos conexion
+$parametroC = 'mysql:dbname=solecon;host=localhost;port=3306';
 $accesoU = "root";
 $accesoC = "";
 $errorM = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_NUM];
