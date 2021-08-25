@@ -16,9 +16,7 @@
 <!-- Plugins JS Ends-->
 <!-- Theme js-->
 <script src="assets/js/script.js"></script>
-<script src="assets/js/theme-customizer/customizer.js"></script>
 <!-- login js-->
 <!-- Alertas -->
-<script src="assets/js/sweet-alert/app.js"></script>
-<script src="assets/js/sweet-alert/sweetalert.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" charset="utf-8"></script>

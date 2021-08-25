@@ -23,12 +23,12 @@
             <div class="page-title">
               <div class="row">
                 <div class="col-6">
-                  <h3> Administracion de usuarios</h3>
+                  <h3> Administracion de permisos del sistema</h3>
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php"><i data-feather="home"></i></a> Panel principal</li>
-                    <li class="breadcrumb-item active"> Usuarios</li>
+                    <li class="breadcrumb-item"><a href="inicio.php"><i data-feather="home"></i></a> Panel principal</li>
+                    <li class="breadcrumb-item active"> Permisos</li>
                   </ol>
                 </div>
               </div>
@@ -38,9 +38,9 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
-                <a href="#" class="btn btn-primary btn-md"> <i class="fa fa-plus"></i> Agregar usuario</a>
+                <a href="#" class="btn btn-primary btn-md" id="btnAdd" data-bs-toggle="modal" data-bs-target="#agregarPModal"> <i class="fa fa-plus"></i> Agregar permiso</a>
                 <hr>
-                <div class="table-responsive-sm" id="mostrarTablaUsuarios"></div>
+                <div class="table-responsive-sm" id="mostrarTablaPermisos"></div>
               </div>
             </div>
           </div>
@@ -49,7 +49,11 @@
         <?php include 'secciones/pie-pagina.php'; // Incluimos el pie de pagina de la plantilla. ?>
       </div>
     </div>
+    <?php
+      include 'modales/agregarPermiso.php';
+      include 'modales/editarPermiso.php';
+    ?>
     <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
-    <script src="ajax/ajaxUsuario.js" charset="utf-8"></script>
+    <script src="ajax/ajaxPermiso.js" charset="utf-8"></script>
   </body>
 </html>

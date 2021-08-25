@@ -32,8 +32,6 @@
     <link id="color" rel="stylesheet" href="assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
-    <!-- Alertas -->
-    <link rel="stylesheet" href="assets/css/vendors/sweetalert2.css">
   </head>
   <body>
     <!-- login page start-->
@@ -43,10 +41,11 @@
         <div class="col-xl-5 p-0">
           <div class="login-card">
             <div>
-              <div class="login-main"> 
+              <div class="login-main">
                 <form class="theme-form" id="accesoFormulario">
-                  <h4>SOLECON ELECTRIC</h4>
-                  <p>Sistema de inventarios</p>
+                  <img src="imagenes/solecon.jpeg" class="img-fluid offset-1" alt="">
+                  <h4 class="mt-4 text-center">SOLECON ELECTRIC</h4>
+                  <p class="text-center">Sistema de inventarios</p>
                   <div class="form-group">
                     <label class="col-form-label">Usuarios:</label>
                     <input class="form-control" type="text" name="accesoU" id="accesoU" placeholder="Test@gmail.com">
@@ -55,7 +54,6 @@
                     <label class="col-form-label">Contraseña:</label>
                     <div class="form-input position-relative">
                       <input class="form-control" type="password" name="accesoC" id="accesoC" placeholder="*********">
-                      <div class="show-hide"><span class="show"> </span></div>
                     </div>
                   </div>
                   <div class="form-group mb-0">
@@ -63,7 +61,7 @@
                       <input id="checkbox1" type="checkbox">
                       <label class="text-muted" for="checkbox1">Recordar contraseña?</label>
                     </div>
-                    <a href="#" class="btn btn-primary btn-block w-100" name="botonAcceso" id="botonAcceso"> INGRESAR</a>
+                    <a href="#" class="btn btn-success btn-block w-100" name="botonAcceso" id="botonAcceso"> INGRESAR</a>
                   </div>
                   <p class="mt-4 mb-0 text-center">Derechos reservados<a class="ms-2" href="#">@Rocio_Ortiz</a></p>
                 </form>

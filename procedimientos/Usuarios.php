@@ -23,7 +23,7 @@
             <th class="bg-primary text-white text-center" style="width: 35%;">Usuario</th>
             <th class="bg-primary text-white text-center" style="width: 10%;">Permiso</th>
             <th class="bg-primary text-white text-center" style="width: 15%;">Estado</th>
-            <th class="bg-primary text-white text-center" style="width: 10%;"></th>
+            <th class="bg-primary text-white text-center" style="width: 10%;">Acciones</th>
           </thead>
           <tbody>
 <?php
@@ -55,16 +55,11 @@
                       echo '<td class="text-center"><span class="badge badge-danger">Baneado</span></td>';
                   }
 
-                  echo '<td>
+                  echo '<td class="">
                             <center>
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-sm btn-block btn-outline-primary dropdown-toggle font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acciones</button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item btnDetail" id="'.$datos[0].'" data-toggle="modal" data-target="#detail_UModal"><i class="fas fa-eye text-primary"></i> Detalle</a>
-                                    <a class="dropdown-item btnEdit" id="'.$datos[0].'" data-toggle="modal" data-target="#edit_UModal"><i class="fas fa-edit text-info"></i> Editar</a>
-                                    <a class="dropdown-item btnDelete" id="'.$datos[0].'"><i class="fas fa-trash text-danger"></i> Eliminar</a>
-                                </div>
-                            </div>
+                                <a class="btn btn-xs btn-outline-primary btnDetail" id="'.$datos[0].'" data-toggle="modal" data-target="#detail_UModal" title="Ver detalle"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-outline-success btnEdit" id="'.$datos[0].'" data-toggle="modal" data-target="#edit_UModal" title="Editar usuario"><i class="fa fa-edit"></i></a>
+                                <a class="btn btn-xs btn-outline-danger btnDelete" id="'.$datos[0].'" title="Eliminar usuario"><i class="fa fa-trash"></i></a>
                             </center>
                         </td>';
                 echo ' </tr>';

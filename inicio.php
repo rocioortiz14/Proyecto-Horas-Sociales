@@ -19,13 +19,12 @@
             <div class="page-title">
               <div class="row">
                 <div class="col-6">
-                  <h3> Descripcion Base</h3>
+                  <h3> Panel principal</h3>
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php"><i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item">Base</li>
-                    <li class="breadcrumb-item active">Sample Base</li>
+                    <li class="breadcrumb-item"><a href="inicio.php"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item">Inicio</li>
                   </ol>
                 </div>
               </div>
@@ -35,7 +34,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
-                
+
               </div>
             </div>
           </div>
