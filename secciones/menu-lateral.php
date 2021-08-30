@@ -27,7 +27,7 @@
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="sliders"></i><span>Almacen</span></a>
                     <ul class="sidebar-submenu">
-                      <li><a href="general-widget.html">Categorias</a></li>
+                      <li><a href="categorias.php">Categorias</a></li>
                       <li><a href="chart-widget.html">Productos</a></li>
                       <li><a href="chart-widget.html">Inventario</a></li>
                     </ul>
