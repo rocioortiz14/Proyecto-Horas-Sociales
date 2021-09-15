@@ -28,9 +28,9 @@
             <th class="bg-primary text-white text-center" style="width: 10%;"></th>
           </thead>
           <tbody>
-             
+
 <?php
-                
+
             /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
             foreach ($arrayDatos as $datos) {
                 echo '<tr>';
@@ -42,7 +42,7 @@
                   echo '<td class="text-center">' . $datos[4] . '</td>';
                   echo '<td class="text-center">' . $datos[5] . '</td>';
                   echo '<td class="text-center">' . $datos[6] . '</td>';
-                  
+
                   echo '<td class="">
                             <center>
                                 <div class="btn-group">
@@ -76,19 +76,35 @@
         $clienteT = $_POST['inputTelefono'];
         $clienteC = $_POST['inputCorreo'];
         $clienteE = $_POST['inputestado'];
-       
-        if ($clienteN == '' || $clienteN == null || $clienteA == '' || $clienteA == null || $clienteD == '' || $clienteD == null || $clienteT == '' || $clienteT == null || $clienteC == '' || $clienteC == null || $clienteE == '' || $clienteE == null) {
+
+        if ($clienteN == '' || $clienteN == null ||
+            $clienteA == '' || $clienteA == null ||
+            $clienteD == '' || $clienteD == null ||
+            $clienteT == '' || $clienteT == null ||
+            $clienteC == '' || $clienteC == null ||
+            $clienteE == '' || $clienteE == null) {
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
           // Pasamos los parámetros para insertar Cliente y almacenamos la sentencia SQL en variable.
-          $insertarCl = $conexion -> prepare("INSERT INTO tbl_clientes (cliente_Nombre, cliente_Apellido, cliente_Direccion, cliente_Telefono, cliente_Correo, cliente_estado,) VALUES (:clienteN, :clienteA,:clienteD, :clienteT, :clienteC, :clienteE, )");
+          $insertarCl = $conexion -> prepare("INSERT INTO tbl_clientes (cliente_Nombre,
+                                                                        cliente_Apellido,
+                                                                        cliente_Direccion,
+                                                                        cliente_Telefono,
+                                                                        cliente_Correo,
+                                                                        cliente_estado)
+                                                                        VALUES (:clienteN,
+                                                                        :clienteA,
+                                                                        :clienteD,
+                                                                        :clienteT,
+                                                                        :clienteC,
+                                                                        :clienteE)");
           // Pasamos valores, con sentencias preparadas, para luego ejecutar.
           $insertarCl -> bindParam(':clienteN', $clienteN, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteA', $clienteA, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteD', $clienteD, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteT', $clienteT, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteC', $clienteC, PDO::PARAM_STR);
-          $insertarCl -> bindParam(':clienteE', $clienteE, PDO::PARAM_STR);
+          $insertarCl -> bindParam(':clienteE', $clienteE, PDO::PARAM_INT);
           if($insertarCl -> execute()) {
               $JSON = 1; // Se procede a insertar.
           } else {
@@ -126,17 +142,29 @@
         $clienteC = $_POST['inputCorreo1'];
         $clienteE = $_POST['inputestado1'];
 
-        if ($clienteN == '' || $clienteN == null || $clienteA == '' || $clienteA == null || $clienteD == '' || $clienteD == null || $clienteT == '' || $clienteT == null || $clienteC == '' || $clienteC == null || $clienteE == '' || $clienteE == null) {
+        if ($clienteN == '' || $clienteN == null ||
+            $clienteA == '' || $clienteA == null ||
+            $clienteD == '' || $clienteD == null ||
+            $clienteT == '' || $clienteT == null ||
+            $clienteC == '' || $clienteC == null ||
+            $clienteE == '' || $clienteE == null) {
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
             // Pasamos los parámetros a la función actualizará el Cliente.
-            $actualizarCli = $conexion -> prepare('UPDATE tbl_clientes SET cliente_Nombre = :clienteN, cliente_Apellido = :clienteA, cliente_Direccion = :clienteD, cliente_Telefono = :clienteT, cliente_estado = :clienteE, cli_actualizar = NOW() WHERE cliente_Id = :idCl');
+            $actualizarCli = $conexion -> prepare('UPDATE tbl_clientes SET
+                                                  cliente_Nombre = :clienteN,
+                                                  cliente_Apellido = :clienteA,
+                                                  cliente_Direccion = :clienteD,
+                                                  cliente_Telefono = :clienteT,
+                                                  cliente_Correo = :clienteC,
+                                                  cliente_estado = :clienteE
+                                                  WHERE cliente_Id = :idCl');
             $actualizarCli -> bindValue(':clienteN', $clienteN, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteA', $clienteA, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteD', $clienteD, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteT', $clienteT, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteC', $clienteC, PDO::PARAM_STR);
-            $actualizarCli -> bindValue(':clienteE', $clienteE, PDO::PARAM_STR);
+            $actualizarCli -> bindValue(':clienteE', $clienteE, PDO::PARAM_INT);
             $actualizarCli -> bindValue(':idCl', $idCl, PDO::PARAM_INT);
             // Ejecutamos y verificamos que el Cliente ha sido actualizado.
             if($actualizarCli -> execute()) {

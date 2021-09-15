@@ -8,6 +8,7 @@
       </div>
       <div class="modal-body">
         <form class="" action="" method="post" id="formECliente">
+          <input type="hidden" name="id" id="id">
           <div class="form-group">
             <label for="" class="form-label">Nombres: </label>
             <input type="text" class="form-control" name="inputNombre1" id="inputNombre1">
