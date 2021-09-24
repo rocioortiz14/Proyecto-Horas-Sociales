@@ -23,7 +23,7 @@
                   <li><a href="usuarios.php" data-original-title="" title=""><i data-feather="user"></i><span>Usuarios</span></a></li>
                   <li><a href="permisos.php" data-original-title="" title=""><i data-feather="user-x"></i><span>Permisos</span></a></li>
                   <hr>
-                  <li><a href="#" data-original-title="" title=""><i data-feather="heart"></i><span>Empresa</span></a></li>
+                  <li><a href="empresa.php" data-original-title="" title=""><i data-feather="heart"></i><span>Empresa</span></a></li>
                   <li><a href="#" data-original-title="" title=""><i data-feather="award"></i><span>Empleados</span></a></li>
                 </ul>
               </li>
