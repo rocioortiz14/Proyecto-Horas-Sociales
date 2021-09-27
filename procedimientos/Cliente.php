@@ -24,7 +24,6 @@
             <th class="bg-primary text-white text-center" style="width: 20%;">Dirección</th>
             <th class="bg-primary text-white text-center" style="width: 5%;">Telefono</th>
             <th class="bg-primary text-white text-center" style="width: 15%;">Correo</th>
-            <th class="bg-primary text-white text-center" style="width: 5%;">Estado</th>
             <th class="bg-primary text-white text-center" style="width: 10%;"></th>
           </thead>
           <tbody>
@@ -41,7 +40,6 @@
                   echo '<td class="text-center">' . $datos[3] . '</td>';
                   echo '<td class="text-center">' . $datos[4] . '</td>';
                   echo '<td class="text-center">' . $datos[5] . '</td>';
-                  echo '<td class="text-center">' . $datos[6] . '</td>';
 
                   echo '<td class="">
                             <center>
@@ -75,14 +73,12 @@
         $clienteD = $_POST['inputDireccion'];
         $clienteT = $_POST['inputTelefono'];
         $clienteC = $_POST['inputCorreo'];
-        $clienteE = $_POST['inputestado'];
 
         if ($clienteN == '' || $clienteN == null ||
             $clienteA == '' || $clienteA == null ||
             $clienteD == '' || $clienteD == null ||
             $clienteT == '' || $clienteT == null ||
-            $clienteC == '' || $clienteC == null ||
-            $clienteE == '' || $clienteE == null) {
+            $clienteC == '' || $clienteC == null ) {
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
           // Pasamos los parámetros para insertar Cliente y almacenamos la sentencia SQL en variable.
@@ -90,21 +86,18 @@
                                                                         cliente_Apellido,
                                                                         cliente_Direccion,
                                                                         cliente_Telefono,
-                                                                        cliente_Correo,
-                                                                        cliente_estado)
+                                                                        cliente_Correo)
                                                                         VALUES (:clienteN,
                                                                         :clienteA,
                                                                         :clienteD,
                                                                         :clienteT,
-                                                                        :clienteC,
-                                                                        :clienteE)");
+                                                                        :clienteC)");
           // Pasamos valores, con sentencias preparadas, para luego ejecutar.
           $insertarCl -> bindParam(':clienteN', $clienteN, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteA', $clienteA, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteD', $clienteD, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteT', $clienteT, PDO::PARAM_STR);
           $insertarCl -> bindParam(':clienteC', $clienteC, PDO::PARAM_STR);
-          $insertarCl -> bindParam(':clienteE', $clienteE, PDO::PARAM_INT);
           if($insertarCl -> execute()) {
               $JSON = 1; // Se procede a insertar.
           } else {
@@ -140,14 +133,12 @@
         $clienteD = $_POST['inputDireccion1'];
         $clienteT = $_POST['inputTelefono1'];
         $clienteC = $_POST['inputCorreo1'];
-        $clienteE = $_POST['inputestado1'];
 
         if ($clienteN == '' || $clienteN == null ||
             $clienteA == '' || $clienteA == null ||
             $clienteD == '' || $clienteD == null ||
             $clienteT == '' || $clienteT == null ||
-            $clienteC == '' || $clienteC == null ||
-            $clienteE == '' || $clienteE == null) {
+            $clienteC == '' || $clienteC == null ) {
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
             // Pasamos los parámetros a la función actualizará el Cliente.
@@ -156,15 +147,13 @@
                                                   cliente_Apellido = :clienteA,
                                                   cliente_Direccion = :clienteD,
                                                   cliente_Telefono = :clienteT,
-                                                  cliente_Correo = :clienteC,
-                                                  cliente_estado = :clienteE
+                                                  cliente_Correo = :clienteC
                                                   WHERE cliente_Id = :idCl');
             $actualizarCli -> bindValue(':clienteN', $clienteN, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteA', $clienteA, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteD', $clienteD, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteT', $clienteT, PDO::PARAM_STR);
             $actualizarCli -> bindValue(':clienteC', $clienteC, PDO::PARAM_STR);
-            $actualizarCli -> bindValue(':clienteE', $clienteE, PDO::PARAM_INT);
             $actualizarCli -> bindValue(':idCl', $idCl, PDO::PARAM_INT);
             // Ejecutamos y verificamos que el Cliente ha sido actualizado.
             if($actualizarCli -> execute()) {
