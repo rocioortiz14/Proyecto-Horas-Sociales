@@ -29,10 +29,7 @@
             <label for="" class="form-label">Correo: </label>
             <input type="text" class="form-control" name="inputCorreo1" id="inputCorreo1">
           </div>
-        <div class="form-group">
-            <label for="" class="form-label">Estado: </label>
-            <input type="numeric" class="form-control" name="inputestado1" id="inputestado1">
-          </div>
+       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
