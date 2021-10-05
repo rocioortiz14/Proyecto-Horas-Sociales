@@ -18,7 +18,7 @@
           </div>
           <div class="left-header col horizontal-wrapper ps-0">
             <ul class="horizontal-menu">
-              <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="inbox"></i><span> Configuraciones</span></a>
+              <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="settings"></i><span> Configuraciones</span></a>
                 <ul class="header-level-menu menu-to-be-close">
                   <li><a href="usuarios.php" data-original-title="" title=""><i data-feather="user"></i><span>Usuarios</span></a></li>
                   <li><a href="permisos.php" data-original-title="" title=""><i data-feather="user-x"></i><span>Permisos</span></a></li>

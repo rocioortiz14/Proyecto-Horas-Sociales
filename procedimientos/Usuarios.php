@@ -5,11 +5,11 @@
     // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
     require_once '../configuracion/conexion.php';
 
-    $bUsuarios = $conexion -> prepare("SELECT * FROM tbl_usuarios");
+    $cargar = $conexion -> prepare("SELECT * FROM tbl_usuarios");
 
-    $bUsuarios -> execute();
+    $cargar -> execute();
     /*Almacenamos el resultado de fetchAll en una variable*/
-    $arrayDatos = $bUsuarios -> fetchAll();
+    $arrayDatos = $cargar -> fetchAll();
     //print_r($arrayDatos);
 
     if (isset($_POST['action']) && $_POST['action'] == "view") {
@@ -57,9 +57,14 @@
 
                   echo '<td class="">
                             <center>
-                                <a class="btn btn-xs btn-outline-primary btnDetail" id="'.$datos[0].'" data-toggle="modal" data-target="#detail_UModal" title="Ver detalle"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-xs btn-outline-success btnEdit" id="'.$datos[0].'" data-toggle="modal" data-target="#edit_UModal" title="Editar usuario"><i class="fa fa-edit"></i></a>
-                                <a class="btn btn-xs btn-outline-danger btnDelete" id="'.$datos[0].'" title="Eliminar usuario"><i class="fa fa-trash"></i></a>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
+                                    <ul class="dropdown-menu">
+                                        <a href="#" class="dropdown-item text-dark btnDetail" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#detail_UModal" title="Detalle Usuario"><i class="fa fa-eye text-info"></i> Detalle</a>
+                                        <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#edit_UModal" title="Editar Usuario"><i class="fa fa-edit text-success"></i> Editar</a>
+                                        <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar Usuario"><i class="fa fa-trash text-danger"></i> Eliminar</a>
+                                    </ul>
+                                </div>
                             </center>
                         </td>';
                 echo ' </tr>';
@@ -89,20 +94,20 @@
         //$data = [$nameU, $addressU, $phoneU, $emailU, $userU, $passU, $roleU];
 
         // Pasamos los parámetros para insertar usuario y almacenamos la sentencia SQL en variable.
-        $insertarU = $conexion -> prepare("INSERT INTO usuarios (nombreU, direccionU, telefonoU, correoU, usuarioU, contraU, rolU)
+        $insertar = $conexion -> prepare("INSERT INTO usuarios (nombreU, direccionU, telefonoU, correoU, usuarioU, contraU, rolU)
                                           VALUES (:nameU, :addressU, :phoneU, :emailU, :userU, :passU, :roleU)");
         // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-        $insertarU -> bindParam(':nameU', $nameU, PDO::PARAM_STR);
-        $insertarU -> bindParam(':addressU', $addressU, PDO::PARAM_STR);
-        $insertarU -> bindParam(':phoneU', $phoneU, PDO::PARAM_STR);
-        $insertarU -> bindParam(':emailU', $emailU, PDO::PARAM_STR);
-        $insertarU -> bindParam(':userU', $userU, PDO::PARAM_STR);
-        $insertarU -> bindParam(':passU', $passU, PDO::PARAM_STR);
-        $insertarU -> bindParam(':roleU', $roleU, PDO::PARAM_INT);
+        $insertar -> bindParam(':nameU', $nameU, PDO::PARAM_STR);
+        $insertar -> bindParam(':addressU', $addressU, PDO::PARAM_STR);
+        $insertar -> bindParam(':phoneU', $phoneU, PDO::PARAM_STR);
+        $insertar -> bindParam(':emailU', $emailU, PDO::PARAM_STR);
+        $insertar -> bindParam(':userU', $userU, PDO::PARAM_STR);
+        $insertar -> bindParam(':passU', $passU, PDO::PARAM_STR);
+        $insertar -> bindParam(':roleU', $roleU, PDO::PARAM_INT);
         try {
             $conexion -> beginTransaction();
             // Ejecutamos y verificamos que el usuario ha sido insertado.
-            if($insertarU -> execute()) {
+            if($insertar -> execute()) {
                 $responseJSON = 1;
             }
             $conexion -> commit();
@@ -121,9 +126,9 @@
         // Capturamos el ID del usuario.
         $id = $_POST['edit_id'];
 
-        $buscarIdU = $conexion -> prepare("SELECT * FROM usuarios WHERE idU = :id");
-        $buscarIdU -> execute(['id' => $id]);
-        $usuarioData = $buscarIdU -> fetch();
+        $buscar = $conexion -> prepare("SELECT * FROM usuarios WHERE idU = :id");
+        $buscar -> execute(['id' => $id]);
+        $usuarioData = $buscar -> fetch();
 
         echo json_encode($usuarioData);
     }
@@ -145,20 +150,20 @@
         //$data = [':nameU' => $nameU, ':addressU' => $addressU, ':phoneU' => $phoneU, ':emailU' => $emailU, ':userU' => $userU, ':passU' => $passU, ':roleU' => $roleU, ':idU' => $idU];
 
         // Pasamos los parámetros a la función actualizará el usuario.
-        $actualizarU = $conexion -> prepare('UPDATE usuarios SET nombreU = :nameU, direccionU = :addressU, telefonoU = :phoneU, correoU = :emailU,
+        $actualizar = $conexion -> prepare('UPDATE usuarios SET nombreU = :nameU, direccionU = :addressU, telefonoU = :phoneU, correoU = :emailU,
                                             usuarioU = :userU, contraU = :passU, rolU = :roleU WHERE idU = :idU');
-        $actualizarU -> bindValue(':nameU', $nameU, PDO::PARAM_STR);
-        $actualizarU -> bindValue(':addressU', $addressU, PDO::PARAM_STR);
-        $actualizarU -> bindValue(':phoneU', $phoneU, PDO::PARAM_STR);
-        $actualizarU -> bindValue(':emailU', $emailU, PDO::PARAM_STR);
-        $actualizarU -> bindValue(':userU', $userU, PDO::PARAM_STR);
-        $actualizarU -> bindValue(':passU', $passU, PDO::PARAM_STR);
-        $actualizarU -> bindValue(':roleU', $roleU, PDO::PARAM_INT);
-        $actualizarU -> bindValue(':idU', $idU, PDO::PARAM_INT);
+        $actualizar -> bindValue(':nameU', $nameU, PDO::PARAM_STR);
+        $actualizar -> bindValue(':addressU', $addressU, PDO::PARAM_STR);
+        $actualizar -> bindValue(':phoneU', $phoneU, PDO::PARAM_STR);
+        $actualizar -> bindValue(':emailU', $emailU, PDO::PARAM_STR);
+        $actualizar -> bindValue(':userU', $userU, PDO::PARAM_STR);
+        $actualizar -> bindValue(':passU', $passU, PDO::PARAM_STR);
+        $actualizar -> bindValue(':roleU', $roleU, PDO::PARAM_INT);
+        $actualizar -> bindValue(':idU', $idU, PDO::PARAM_INT);
         try {
             $conexion -> beginTransaction();
             // Ejecutamos y verificamos que el usuario ha sido actualizado.
-            if($actualizarU -> execute()) {
+            if($actualizar -> execute()) {
                 $responseJSON = 1;
             }
             $conexion -> commit();
@@ -182,9 +187,9 @@
         $id = $_POST['del_id'];
 
         // Pasamos los parámetros a la función que preparara la sentencia SQL de eliminación.
-        $eliminarU = $conexion -> prepare("DELETE FROM usuarios WHERE idU = :id");
+        $eliminar = $conexion -> prepare("DELETE FROM usuarios WHERE idU = :id");
 
-        if ($eliminarU -> execute(['id' => $id])) {
+        if ($eliminar -> execute(['id' => $id])) {
           $responseJSON = 1;
         } else {
           $responseJSON = 2;

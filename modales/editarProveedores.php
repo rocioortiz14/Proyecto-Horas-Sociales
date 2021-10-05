@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-primary">
-        <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-plus"></i>EDITAR CLIENTE</h5>
+        <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-edit"></i> EDITAR PROVEEDORES</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -29,7 +29,7 @@
             <label for="" class="form-label">Telefono: </label>
             <input type="text" class="form-control" name="inputTelefono1" id="inputTelefono1">
           </div>
-          
+
           <div class="form-group">
             <label for="" class="form-label">Correo: </label>
             <input type="text" class="form-control" name="inputCorreo1" id="inputCorreo1">

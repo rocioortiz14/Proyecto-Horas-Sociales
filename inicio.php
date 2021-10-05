@@ -33,8 +33,69 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid">
             <div class="row">
-              <div class="col-sm-12">
-
+              <!-- GENERAR FACTURA DE VENTA -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <a href="#">
+                  <div class="card o-hidden">
+                    <div class="card-body">
+                      <div class="ecommerce-widgets media">
+                        <div class="media-body">
+                          <p class="f-w-500 font-roboto text-secondary">GENERAR<span class="badge pill-badge-primary ms-3">Venta</span></p>
+                          <h4 class="f-w-500 mb-0 f-20"><span class="counter text-dark">FACTURAR</span></h4>
+                        </div>
+                        <div class="ecommerce-box light-bg-primary"><i class="fa fa-dollar text-primary" aria-hidden="true"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <!-- GENERAR FACTURA DE COMPRA -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <a href="#">
+                  <div class="card o-hidden">
+                    <div class="card-body">
+                      <div class="ecommerce-widgets media">
+                        <div class="media-body">
+                          <p class="f-w-500 font-roboto text-secondary">GENERAR<span class="badge pill-badge-danger ms-3">Compra</span></p>
+                          <h4 class="f-w-500 mb-0 f-20"><span class="counter text-dark">FACTURAR</span></h4>
+                        </div>
+                        <div class="ecommerce-box light-bg-primary"><i class="fa fa-dollar text-danger" aria-hidden="true"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <!-- GCONSULTAR PRODUCTO -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <a href="#">
+                  <div class="card o-hidden">
+                    <div class="card-body">
+                      <div class="ecommerce-widgets media">
+                        <div class="media-body">
+                          <p class="f-w-500 font-roboto text-secondary">CONSULTAR<span class="badge pill-badge-success ms-3">Producto</span></p>
+                          <h4 class="f-w-500 mb-0 f-20"><span class="counter text-dark">DETALLE</span></h4>
+                        </div>
+                        <div class="ecommerce-box light-bg-primary"><i class="fa fa-star-o text-success" aria-hidden="true"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <!-- ADMINISTRAR INVENTARIO -->
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <a href="#">
+                  <div class="card o-hidden">
+                    <div class="card-body">
+                      <div class="ecommerce-widgets media">
+                        <div class="media-body">
+                          <p class="f-w-500 font-roboto text-secondary">ADMINISTRAR<span class="badge pill-badge-warning ms-3">Almacen</span></p>
+                          <h4 class="f-w-500 mb-0 f-20"><span class="counter text-dark">INVENTARIO</span></h4>
+                        </div>
+                        <div class="ecommerce-box light-bg-primary"><i class="fa fa-cubes text-warning" aria-hidden="true"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
           </div>

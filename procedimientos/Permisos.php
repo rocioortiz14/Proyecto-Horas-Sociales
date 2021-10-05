@@ -5,11 +5,11 @@
     // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
     require_once '../configuracion/conexion.php';
 
-    $bPermisos = $conexion -> prepare("SELECT * FROM tbl_permisos");
+    $cargar = $conexion -> prepare("SELECT * FROM tbl_permisos");
 
-    $bPermisos -> execute();
+    $cargar -> execute();
     /*Almacenamos el resultado de fetchAll en una variable*/
-    $arrayDatos = $bPermisos -> fetchAll();
+    $arrayDatos = $cargar -> fetchAll();
     //print_r($arrayDatos);
 
     if (isset($_POST['action']) && $_POST['action'] == "view") {
@@ -35,7 +35,7 @@
                   echo '<td class="">
                             <center>
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
+                                    <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                                     <ul class="dropdown-menu">
                                         <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#editarPModal" title="Editar permiso"><i class="fa fa-edit text-success"></i> Editar</a>
                                         <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar permiso"><i class="fa fa-trash text-danger"></i> Eliminar</a>
@@ -66,11 +66,11 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
           // Pasamos los parámetros para insertar permiso y almacenamos la sentencia SQL en variable.
-          $insertarP = $conexion -> prepare("INSERT INTO tbl_permisos (p_permiso, p_descripcion) VALUES (:permisoP, :descP)");
+          $insertar = $conexion -> prepare("INSERT INTO tbl_permisos (p_permiso, p_descripcion) VALUES (:permisoP, :descP)");
           // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-          $insertarP -> bindParam(':permisoP', $permisoP, PDO::PARAM_STR);
-          $insertarP -> bindParam(':descP', $descP, PDO::PARAM_STR);
-          if($insertarP -> execute()) {
+          $insertar -> bindParam(':permisoP', $permisoP, PDO::PARAM_STR);
+          $insertar -> bindParam(':descP', $descP, PDO::PARAM_STR);
+          if($insertar -> execute()) {
               $JSON = 1; // Se procede a insertar.
           } else {
             $JSON = 2; // Error en la inserción.
@@ -86,9 +86,9 @@
         // Capturamos el ID del permiso.
         $id = $_POST['edit_id'];
 
-        $buscarIdP = $conexion -> prepare("SELECT * FROM tbl_permisos WHERE p_id = :id");
-        $buscarIdP -> execute(['id' => $id]);
-        $permisoData = $buscarIdP -> fetch();
+        $buscar = $conexion -> prepare("SELECT * FROM tbl_permisos WHERE p_id = :id");
+        $buscar -> execute(['id' => $id]);
+        $permisoData = $buscar -> fetch();
 
         echo json_encode($permisoData);
     }
@@ -107,12 +107,12 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
             // Pasamos los parámetros a la función actualizará el permiso.
-            $actualizarP = $conexion -> prepare('UPDATE tbl_permisos SET p_permiso = :permisoP, p_descripcion = :descP, p_actualizar = NOW() WHERE p_id = :idP');
-            $actualizarP -> bindValue(':permisoP', $permisoP, PDO::PARAM_STR);
-            $actualizarP -> bindValue(':descP', $descP, PDO::PARAM_STR);
-            $actualizarP -> bindValue(':idP', $idP, PDO::PARAM_INT);
+            $actualizar = $conexion -> prepare('UPDATE tbl_permisos SET p_permiso = :permisoP, p_descripcion = :descP, p_actualizar = NOW() WHERE p_id = :idP');
+            $actualizar -> bindValue(':permisoP', $permisoP, PDO::PARAM_STR);
+            $actualizar -> bindValue(':descP', $descP, PDO::PARAM_STR);
+            $actualizar -> bindValue(':idP', $idP, PDO::PARAM_INT);
             // Ejecutamos y verificamos que el permiso ha sido actualizado.
-            if($actualizarP -> execute()) {
+            if($actualizar -> execute()) {
                 $JSON = 1;
             } else {
               $JSON = 2;
@@ -133,9 +133,9 @@
         $id = $_POST['del_id'];
 
         // Pasamos los parámetros a la función que preparara la sentencia SQL de eliminación.
-        $eliminarP = $conexion -> prepare("DELETE FROM tbl_permisos WHERE p_id = :id");
+        $eliminar = $conexion -> prepare("DELETE FROM tbl_permisos WHERE p_id = :id");
 
-        if ($eliminarP -> execute(['id' => $id])) {
+        if ($eliminar -> execute(['id' => $id])) {
           $JSON = 1;
         } else {
           $JSON = 2;

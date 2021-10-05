@@ -5,11 +5,11 @@
     // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
     require_once '../configuracion/conexion.php';
 
-    $bProveedores = $conexion -> prepare("SELECT * FROM tbl_proveedores");
+    $cargar = $conexion -> prepare("SELECT * FROM tbl_proveedores");
 
-    $bProveedores -> execute();
+    $cargar -> execute();
     /*Almacenamos el resultado de fetchAll en una variable*/
-    $arrayDatos = $bProveedores -> fetchAll();
+    $arrayDatos = $cargar -> fetchAll();
     //print_r($arrayDatos);
 
     if (isset($_POST['action']) && $_POST['action'] == "view") {
@@ -48,9 +48,9 @@
                   echo '<td class="">
                             <center>
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
+                                    <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                                     <ul class="dropdown-menu">
-                                        <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#editarPrvModal" title="Editar Proveedor><i class="fa fa-edit text-success"></i> Editar</a>
+                                        <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#editarPrvModal" title="Editar Proveedor"><i class="fa fa-edit text-success"></i> Editar</a>
                                         <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar Proveedor"><i class="fa fa-trash text-danger"></i> Eliminar</a>
                                     </ul>
                                 </div>
@@ -90,7 +90,7 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
           // Pasamos los parámetros para insertar Cliente y almacenamos la sentencia SQL en variable.
-          $insertarPrv = $conexion -> prepare("INSERT INTO tbl_proveedores (prv_codigo,
+          $insertar = $conexion -> prepare("INSERT INTO tbl_proveedores (prv_codigo,
                                                                         prv_nit,
                                                                         prv_nombre,
                                                                         prv_direccion,
@@ -105,14 +105,14 @@
                                                                         :proveedorC,
                                                                         :proveedorR)");
           // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-          $insertarPrv -> bindParam(':proveedorCod', $proveedorCod, PDO::PARAM_STR);
-          $insertarPrv -> bindParam(':proveedorNit', $proveedorNit, PDO::PARAM_STR);
-          $insertarPrv -> bindParam(':proveedorN', $proveedorN, PDO::PARAM_STR);
-          $insertarPrv -> bindParam(':proveedorD', $proveedorD, PDO::PARAM_STR);
-          $insertarPrv -> bindParam(':proveedorT', $proveedorT, PDO::PARAM_STR);
-          $insertarPrv -> bindParam(':proveedorC', $proveedorC, PDO::PARAM_STR);
-          $insertarPrv -> bindParam(':proveedorR', $proveedorR, PDO::PARAM_STR);
-          if($insertarPrv -> execute()) {
+          $insertar -> bindParam(':proveedorCod', $proveedorCod, PDO::PARAM_STR);
+          $insertar -> bindParam(':proveedorNit', $proveedorNit, PDO::PARAM_STR);
+          $insertar -> bindParam(':proveedorN', $proveedorN, PDO::PARAM_STR);
+          $insertar -> bindParam(':proveedorD', $proveedorD, PDO::PARAM_STR);
+          $insertar -> bindParam(':proveedorT', $proveedorT, PDO::PARAM_STR);
+          $insertar -> bindParam(':proveedorC', $proveedorC, PDO::PARAM_STR);
+          $insertar -> bindParam(':proveedorR', $proveedorR, PDO::PARAM_STR);
+          if($insertar -> execute()) {
               $JSON = 1; // Se procede a insertar.
           } else {
             $JSON = 2; // Error en la inserción.
@@ -128,9 +128,9 @@
         // Capturamos el ID del Cliente.
         $id = $_POST['edit_id'];
 
-        $buscarIdPrv = $conexion -> prepare("SELECT * FROM tbl_proveedores WHERE prv_id = :id");
-        $buscarIdPrv -> execute(['id' => $id]);
-        $proveedorData = $buscarIdPrv -> fetch();
+        $buscar = $conexion -> prepare("SELECT * FROM tbl_proveedores WHERE prv_id = :id");
+        $buscar -> execute(['id' => $id]);
+        $proveedorData = $buscar -> fetch();
 
         echo json_encode($proveedorData);
     }
@@ -160,7 +160,7 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
             // Pasamos los parámetros a la función actualizará el Cliente.
-            $actualizarPrv = $conexion -> prepare('UPDATE tbl_proveedores SET
+            $actualizar = $conexion -> prepare('UPDATE tbl_proveedores SET
                                                   prv_codigo = :proveedorCod,
                                                   prv_nit = :proveedorNit,
                                                   prv_nombre = :proveedorN,
@@ -169,16 +169,16 @@
                                                   prv_correo = :proveedorC,
                                                   prv_razonsocial = :proveedorR
                                                   WHERE prv_id = :IdPrv');
-            $actualizarPrv -> bindValue(':proveedorCod', $proveedorCod, PDO::PARAM_STR);
-            $actualizarPrv -> bindValue(':proveedorNit', $proveedorNit, PDO::PARAM_STR);
-            $actualizarPrv -> bindValue(':proveedorN', $proveedorN, PDO::PARAM_STR);
-            $actualizarPrv -> bindValue(':proveedorD', $proveedorD, PDO::PARAM_STR);
-            $actualizarPrv -> bindValue(':proveedorT', $proveedorT, PDO::PARAM_STR);
-            $actualizarPrv -> bindValue(':proveedorC', $proveedorC, PDO::PARAM_STR);
-            $actualizarPrv -> bindValue(':proveedorR', $proveedorR, PDO::PARAM_STR);
-            $actualizarPrv -> bindValue(':IdPrv', $IdPrv, PDO::PARAM_INT);
+            $actualizar -> bindValue(':proveedorCod', $proveedorCod, PDO::PARAM_STR);
+            $actualizar -> bindValue(':proveedorNit', $proveedorNit, PDO::PARAM_STR);
+            $actualizar -> bindValue(':proveedorN', $proveedorN, PDO::PARAM_STR);
+            $actualizar -> bindValue(':proveedorD', $proveedorD, PDO::PARAM_STR);
+            $actualizar -> bindValue(':proveedorT', $proveedorT, PDO::PARAM_STR);
+            $actualizar -> bindValue(':proveedorC', $proveedorC, PDO::PARAM_STR);
+            $actualizar -> bindValue(':proveedorR', $proveedorR, PDO::PARAM_STR);
+            $actualizar -> bindValue(':IdPrv', $IdPrv, PDO::PARAM_INT);
             // Ejecutamos y verificamos que el Cliente ha sido actualizado.
-            if($actualizarPrv -> execute()) {
+            if($actualizar -> execute()) {
                 $JSON = 1;
             } else {
               $JSON = 2;
@@ -199,9 +199,9 @@
         $id = $_POST['del_id'];
 
         // Pasamos los parámetros a la función que preparara la sentencia SQL de eliminación.
-        $eliminarPrv = $conexion -> prepare("DELETE FROM tbl_proveedores WHERE prv_id = :id");
+        $eliminar = $conexion -> prepare("DELETE FROM tbl_proveedores WHERE prv_id = :id");
 
-        if ($eliminarPrv -> execute(['id' => $id])) {
+        if ($eliminar -> execute(['id' => $id])) {
           $JSON = 1;
         } else {
           $JSON = 2;

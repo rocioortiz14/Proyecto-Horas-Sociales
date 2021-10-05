@@ -5,11 +5,11 @@
     // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
     require_once '../configuracion/conexion.php';
 
-    $bClientes = $conexion -> prepare("SELECT * FROM tbl_clientes");
+    $cargar = $conexion -> prepare("SELECT * FROM tbl_clientes");
 
-    $bClientes -> execute();
+    $cargar -> execute();
     /*Almacenamos el resultado de fetchAll en una variable*/
-    $arrayDatos = $bClientes -> fetchAll();
+    $arrayDatos = $cargar -> fetchAll();
     //print_r($arrayDatos);
 
     if (isset($_POST['action']) && $_POST['action'] == "view") {
@@ -44,7 +44,7 @@
                   echo '<td class="">
                             <center>
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
+                                    <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                                     <ul class="dropdown-menu">
                                         <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#editarClModal" title="Editar Cliente"><i class="fa fa-edit text-success"></i> Editar</a>
                                         <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar Cliente"><i class="fa fa-trash text-danger"></i> Eliminar</a>
@@ -82,7 +82,7 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
           // Pasamos los parámetros para insertar Cliente y almacenamos la sentencia SQL en variable.
-          $insertarCl = $conexion -> prepare("INSERT INTO tbl_clientes (cliente_Nombre,
+          $insertar = $conexion -> prepare("INSERT INTO tbl_clientes (cliente_Nombre,
                                                                         cliente_Apellido,
                                                                         cliente_Direccion,
                                                                         cliente_Telefono,
@@ -93,12 +93,12 @@
                                                                         :clienteT,
                                                                         :clienteC)");
           // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-          $insertarCl -> bindParam(':clienteN', $clienteN, PDO::PARAM_STR);
-          $insertarCl -> bindParam(':clienteA', $clienteA, PDO::PARAM_STR);
-          $insertarCl -> bindParam(':clienteD', $clienteD, PDO::PARAM_STR);
-          $insertarCl -> bindParam(':clienteT', $clienteT, PDO::PARAM_STR);
-          $insertarCl -> bindParam(':clienteC', $clienteC, PDO::PARAM_STR);
-          if($insertarCl -> execute()) {
+          $insertar -> bindParam(':clienteN', $clienteN, PDO::PARAM_STR);
+          $insertar -> bindParam(':clienteA', $clienteA, PDO::PARAM_STR);
+          $insertar -> bindParam(':clienteD', $clienteD, PDO::PARAM_STR);
+          $insertar -> bindParam(':clienteT', $clienteT, PDO::PARAM_STR);
+          $insertar -> bindParam(':clienteC', $clienteC, PDO::PARAM_STR);
+          if($insertar -> execute()) {
               $JSON = 1; // Se procede a insertar.
           } else {
             $JSON = 2; // Error en la inserción.
@@ -114,9 +114,9 @@
         // Capturamos el ID del Cliente.
         $id = $_POST['edit_id'];
 
-        $buscarIdCli = $conexion -> prepare("SELECT * FROM tbl_clientes WHERE cliente_Id = :id");
-        $buscarIdCli -> execute(['id' => $id]);
-        $clienteData = $buscarIdCli -> fetch();
+        $buscar = $conexion -> prepare("SELECT * FROM tbl_clientes WHERE cliente_Id = :id");
+        $buscar -> execute(['id' => $id]);
+        $clienteData = $buscar -> fetch();
 
         echo json_encode($clienteData);
     }
@@ -142,21 +142,21 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
             // Pasamos los parámetros a la función actualizará el Cliente.
-            $actualizarCli = $conexion -> prepare('UPDATE tbl_clientes SET
+            $actualizar = $conexion -> prepare('UPDATE tbl_clientes SET
                                                   cliente_Nombre = :clienteN,
                                                   cliente_Apellido = :clienteA,
                                                   cliente_Direccion = :clienteD,
                                                   cliente_Telefono = :clienteT,
                                                   cliente_Correo = :clienteC
                                                   WHERE cliente_Id = :idCl');
-            $actualizarCli -> bindValue(':clienteN', $clienteN, PDO::PARAM_STR);
-            $actualizarCli -> bindValue(':clienteA', $clienteA, PDO::PARAM_STR);
-            $actualizarCli -> bindValue(':clienteD', $clienteD, PDO::PARAM_STR);
-            $actualizarCli -> bindValue(':clienteT', $clienteT, PDO::PARAM_STR);
-            $actualizarCli -> bindValue(':clienteC', $clienteC, PDO::PARAM_STR);
-            $actualizarCli -> bindValue(':idCl', $idCl, PDO::PARAM_INT);
+            $actualizar -> bindValue(':clienteN', $clienteN, PDO::PARAM_STR);
+            $actualizar -> bindValue(':clienteA', $clienteA, PDO::PARAM_STR);
+            $actualizar -> bindValue(':clienteD', $clienteD, PDO::PARAM_STR);
+            $actualizar -> bindValue(':clienteT', $clienteT, PDO::PARAM_STR);
+            $actualizar -> bindValue(':clienteC', $clienteC, PDO::PARAM_STR);
+            $actualizar -> bindValue(':idCl', $idCl, PDO::PARAM_INT);
             // Ejecutamos y verificamos que el Cliente ha sido actualizado.
-            if($actualizarCli -> execute()) {
+            if($actualizar -> execute()) {
                 $JSON = 1;
             } else {
               $JSON = 2;
@@ -177,9 +177,9 @@
         $id = $_POST['del_id'];
 
         // Pasamos los parámetros a la función que preparara la sentencia SQL de eliminación.
-        $eliminarCl = $conexion -> prepare("DELETE FROM tbl_clientes WHERE cliente_Id = :id");
+        $eliminar = $conexion -> prepare("DELETE FROM tbl_clientes WHERE cliente_Id = :id");
 
-        if ($eliminarCl -> execute(['id' => $id])) {
+        if ($eliminar -> execute(['id' => $id])) {
           $JSON = 1;
         } else {
           $JSON = 2;

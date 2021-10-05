@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-primary">
-        <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-plus"></i> AGREGAR PERMISO</h5>
+        <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-edit"></i> EDITAR PERMISO</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
