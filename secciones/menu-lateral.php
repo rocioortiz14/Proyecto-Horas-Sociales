@@ -16,7 +16,7 @@
                   </li>
 
                   <li class="sidebar-main-title">
-                      <img src="imagenes/solecon.jpeg" class="img-fluid" alt="">
+                      <img src="imagenes/uploads/<?php echo $resultado[12]; ?>" class="img-fluid logoLeft" alt="">
                   </li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="inicio.php"><i data-feather="square"> </i><span>Inicio</span></a></li>

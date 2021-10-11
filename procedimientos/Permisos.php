@@ -59,8 +59,8 @@
         $JSON = 0;
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
-        $permisoP = $_POST['inputPermiso'];
-        $descP = $_POST['inputDesc'];
+        $permisoP = mb_strtoupper($_POST['inputPermiso'], 'UTF-8');
+        $descP = mb_strtoupper($_POST['inputDesc'], 'UTF-8');
 
         if ($permisoP == '' || $permisoP == null || $descP == '' || $descP == null) {
             $JSON = 0; // Para el caso de datos vacios o nulos.
@@ -100,8 +100,8 @@
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
         $idP = $_POST['id'];
-        $permisoP = $_POST['inputPermiso1'];
-        $descP = $_POST['inputDesc1'];
+        $permisoP = mb_strtoupper($_POST['inputPermiso1'], 'UTF-8');
+        $descP = mb_strtoupper($_POST['inputDesc1'], 'UTF-8');
 
         if ($permisoP == '' || $permisoP == null || $descP == '' || $descP == null) {
             $JSON = 0; // Para el caso de datos vacios o nulos.

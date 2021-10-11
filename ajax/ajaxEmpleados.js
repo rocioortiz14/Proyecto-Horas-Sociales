@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     // Ejecutamos función que mediante AJAX muestra los datos de los usuarios en pantalla.
     mostrarEmpleados();
-  
+
     // Función encargada de mostrar los usuarios en pantalla.
     function mostrarEmpleados() {
         $.ajax({
@@ -44,7 +44,7 @@ $(document).ready(function(){
           }
         });
     } // Aquí termina la función encargada de mostrar los usuarios.
-  
+
     // Mediante Ajax, al dar clic en en el boton guardar se almacenan todos los datos (Serialize).
     $("#guardar").click(function(e){
         if ($("#formAEmpleados")[0].checkValidity()) {
@@ -61,7 +61,7 @@ $(document).ready(function(){
                         title: 'Oops!',
                         text: 'Rellene todos los campos!'
                     });
-                   
+
                 } else if (data === 1) {
                     Swal.fire({
                         icon: 'success',
@@ -90,7 +90,7 @@ $(document).ready(function(){
                     $("#formAEmpleados")[0].reset();
                     mostrarEmpleados();
                 }
-  
+
             },
             error: function(e){
               console.log(e);
@@ -98,7 +98,7 @@ $(document).ready(function(){
           });
         }
     }); // Aquí termina la función encargada de insertar los permisos.
-  
+
     // Mediante Ajax, al dar clic en en el boton editar se muestran los datos en el formulario.
     $("body").on("click",".btnEdit",function(e){
         e.preventDefault();
@@ -109,7 +109,7 @@ $(document).ready(function(){
           data:{edit_id:idEmp},
           success:function(response){
             data = JSON.parse(response);
-  
+
             $("#id").val(data[0]);
             $("#inputCodigo1").val(data[1]);
             $("#inputNombre1").val(data[2]);
@@ -123,7 +123,7 @@ $(document).ready(function(){
           }
         });
     }); // Aquí termina la función encargada de mostrar los datos del permiso en el formulario.
-  
+
     // Mediante Ajax, al dar clic en en el boton actualizar, se almacenan todos los datos actualizados (Serialize).
     $("#editar").click(function(e){
         if ($("#formEditEmpleados")[0].checkValidity()) {
@@ -134,7 +134,7 @@ $(document).ready(function(){
             data: $("#formEditEmpleados").serialize()+"&action=update",
             success:function(response){
                 data = JSON.parse(response);
-  
+
                 if (data === 0) {
                     Swal.fire({
                         icon: 'info',
@@ -176,15 +176,15 @@ $(document).ready(function(){
           });
         }
     }); // Aquí termina la función encargada de actualizar los usuarios.
-  
+
     // Mediante Ajax, al dar clic en el boton eliminar, aparece a la alerta de confirmación de eliminación de usuario.
     $("body").on("click",".btnDelete",function(e){
         e.preventDefault();
-  
+
         // Capturamos la fila del usuario en la tabla y el ID del usuario.
         var tdEmp = $(this).closest('tr');
         var idEmpDel = $(this).attr('id');
-  
+
         Swal.fire({
           title: 'Estas seguro?',
           text: "Eliminarás este permiso del sistema!",
@@ -201,7 +201,7 @@ $(document).ready(function(){
               data:{del_id:idEmpDel},
               success:function(response){
                 data = JSON.parse(response);
-  
+
                 if (data === 1) {
                     tdEmp.css('background-color','purple');
                     Swal.fire({
@@ -233,6 +233,5 @@ $(document).ready(function(){
           }
         });
     }); // Aquí termina la función encargada de eliminar los permisos.
-  
+
   });
-  

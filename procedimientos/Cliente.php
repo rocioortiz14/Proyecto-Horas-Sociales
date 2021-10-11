@@ -68,9 +68,9 @@
         $JSON = 0;
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
-        $clienteN = $_POST['inputNombre'];
-        $clienteA = $_POST['inputApellido'];
-        $clienteD = $_POST['inputDireccion'];
+        $clienteN = mb_strtoupper($_POST['inputNombre'], 'UTF-8');
+        $clienteA = mb_strtoupper($_POST['inputApellido'], 'UTF-8');
+        $clienteD = mb_strtoupper($_POST['inputDireccion'], 'UTF-8');
         $clienteT = $_POST['inputTelefono'];
         $clienteC = $_POST['inputCorreo'];
 
@@ -128,9 +128,9 @@
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
         $idCl = $_POST['id'];
-        $clienteN = $_POST['inputNombre1'];
-        $clienteA = $_POST['inputApellido1'];
-        $clienteD = $_POST['inputDireccion1'];
+        $clienteN = mb_strtoupper($_POST['inputNombre1'], 'UTF-8');
+        $clienteA = mb_strtoupper($_POST['inputApellido1'], 'UTF-8');
+        $clienteD = mb_strtoupper($_POST['inputDireccion1'], 'UTF-8');
         $clienteT = $_POST['inputTelefono1'];
         $clienteC = $_POST['inputCorreo1'];
 

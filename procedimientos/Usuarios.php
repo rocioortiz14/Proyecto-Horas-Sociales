@@ -5,7 +5,12 @@
     // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
     require_once '../configuracion/conexion.php';
 
-    $cargar = $conexion -> prepare("SELECT * FROM tbl_usuarios");
+    $cargar = $conexion -> prepare("SELECT u.u_id, e.e_nombre, e.e_correo, u.u_usuario,
+                                           u.u_permiso, p.p_permiso, u.u_estado
+                                    FROM tbl_usuarios AS u
+                                    LEFT JOIN tbl_permisos AS p ON u.u_permiso = p.p_id
+                                    LEFT JOIN tbl_empleados AS e ON u.u_empleado = e.e_id
+                                    ORDER BY u.u_id DESC");
 
     $cargar -> execute();
     /*Almacenamos el resultado de fetchAll en una variable*/
@@ -19,11 +24,12 @@
         <table class="table table-hover table-sm" id="tblUsuarios">
           <thead>
             <th class="bg-primary text-white text-center" style="width: 3%;">ID</th>
-            <th class="bg-primary text-white text-center" style="width: 27%;">Nombre completo</th>
-            <th class="bg-primary text-white text-center" style="width: 35%;">Usuario</th>
-            <th class="bg-primary text-white text-center" style="width: 10%;">Permiso</th>
-            <th class="bg-primary text-white text-center" style="width: 15%;">Estado</th>
-            <th class="bg-primary text-white text-center" style="width: 10%;">Acciones</th>
+            <th class="bg-primary text-white text-center" style="width: 32%;">NOMBRE COMPLETO</th>
+            <th class="bg-primary text-white text-center" style="width: 20%;">CORREO</th>
+            <th class="bg-primary text-white text-center" style="width: 10%;">USUARIO</th>
+            <th class="bg-primary text-white text-center" style="width: 15%;">PERMISO</th>
+            <th class="bg-primary text-white text-center" style="width: 10%;">ESTADO</th>
+            <th class="bg-primary text-white text-center" style="width: 10%;">ACCIONES</th>
           </thead>
           <tbody>
 <?php
@@ -34,25 +40,16 @@
                   echo '<td class="text-center">' . $datos[0] . '</td>';
                   echo '<td class="text-center">' . $datos[1] . '</td>';
                   echo '<td class="text-center">' . $datos[2] . '</td>';
-
-                  // Para tipos de roles.
-                  if ($datos[4] == 1) {
-                      echo '<td class="text-center"><span class="badge badge-primary">Administrador</span></td>';
-                  } else if ($datos[4] == 2) {
-                      echo '<td class="text-center"><span class="badge badge-info">Gerencia</span></td>';
-                  } else if ($datos[4] == 3) {
-                      echo '<td class="text-center"><span class="badge badge-secondary">Usuario</span></td>';
-                  } else {
-                      echo '<td class="text-center"><span class="badge badge-danger">Intruso</span></td>';
-                  }
+                  echo '<td class="text-center"><span class="badge badge-light text-dark">' . $datos[3] . '</span></td>';
+                  echo '<td class="text-center">' . $datos[5] . '</td>';
 
                   // Estado de los usuarios.
-                  if ($datos[5] == 1) {
-                      echo '<td class="text-center"><span class="badge badge-primary">Activo</span></td>';
-                  } else if ($datos[5] == 2) {
-                      echo '<td class="text-center"><span class="badge badge-info">Inactivo</span></td>';
+                  if ($datos[6] == 1) {
+                      echo '<td class="text-center"><span class="badge badge-primary">ACTIVO</span></td>';
+                  } else if ($datos[6] == 2) {
+                      echo '<td class="text-center"><span class="badge badge-info">INACTIVO</span></td>';
                   } else {
-                      echo '<td class="text-center"><span class="badge badge-danger">Baneado</span></td>';
+                      echo '<td class="text-center"><span class="badge badge-danger">BANEADO</span></td>';
                   }
 
                   echo '<td class="">
@@ -60,8 +57,7 @@
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                                     <ul class="dropdown-menu">
-                                        <a href="#" class="dropdown-item text-dark btnDetail" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#detail_UModal" title="Detalle Usuario"><i class="fa fa-eye text-info"></i> Detalle</a>
-                                        <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#edit_UModal" title="Editar Usuario"><i class="fa fa-edit text-success"></i> Editar</a>
+                                        <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#editarUModal" title="Editar Usuario"><i class="fa fa-edit text-success"></i> Editar</a>
                                         <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar Usuario"><i class="fa fa-trash text-danger"></i> Eliminar</a>
                                     </ul>
                                 </div>
@@ -83,42 +79,46 @@
         $responseJSON = 0;
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
-        $nameU = $_POST['inputName'];
-        $addressU = $_POST['inputAddress'];
-        $phoneU = $_POST['inputPhone'];
-        $emailU = $_POST['inputEmail'];
-        $userU = $_POST['inputUser'];
-        $passU = password_hash($_POST['inputPass'], PASSWORD_DEFAULT);
-        $roleU = $_POST['inputRole'];
+        $nombreU = mb_strtoupper($_POST['inputNombre'], 'UTF-8');
+        $usuarioU = $_POST['inputUsuario'];
+        $contraU = password_hash($_POST['inputContra'], PASSWORD_DEFAULT);
+        $empleadoU = $_POST['imputEmpleado'];
+        $estadoU = $_POST['inputEstado'];
+        $permisoU = $_POST['inputPermiso'];
 
-        //$data = [$nameU, $addressU, $phoneU, $emailU, $userU, $passU, $roleU];
-
-        // Pasamos los parámetros para insertar usuario y almacenamos la sentencia SQL en variable.
-        $insertar = $conexion -> prepare("INSERT INTO usuarios (nombreU, direccionU, telefonoU, correoU, usuarioU, contraU, rolU)
-                                          VALUES (:nameU, :addressU, :phoneU, :emailU, :userU, :passU, :roleU)");
-        // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-        $insertar -> bindParam(':nameU', $nameU, PDO::PARAM_STR);
-        $insertar -> bindParam(':addressU', $addressU, PDO::PARAM_STR);
-        $insertar -> bindParam(':phoneU', $phoneU, PDO::PARAM_STR);
-        $insertar -> bindParam(':emailU', $emailU, PDO::PARAM_STR);
-        $insertar -> bindParam(':userU', $userU, PDO::PARAM_STR);
-        $insertar -> bindParam(':passU', $passU, PDO::PARAM_STR);
-        $insertar -> bindParam(':roleU', $roleU, PDO::PARAM_INT);
-        try {
-            $conexion -> beginTransaction();
-            // Ejecutamos y verificamos que el usuario ha sido insertado.
-            if($insertar -> execute()) {
-                $responseJSON = 1;
+        if ($nombreU == '' || $usuarioU == '' || $contraU == '' || $empleadoU == '' || $estadoU == '' || $permisoU == '') {
+            $responseJSON = 0;
+            echo json_encode($responseJSON);
+        } else {
+            // Pasamos los parámetros para insertar usuario y almacenamos la sentencia SQL en variable.
+            $insertar = $conexion -> prepare("INSERT INTO tbl_usuarios (u_nombre, u_usuario,
+                                                                        u_contra, u_permiso,
+                                                                        u_estado, u_empleado)
+                                              VALUES (:nombreU, :usuarioU, :contraU,
+                                                      :permisoU, :estadoU, :empleadoU)");
+            // Pasamos valores, con sentencias preparadas, para luego ejecutar.
+            $insertar -> bindParam(':nombreU', $nombreU, PDO::PARAM_STR);
+            $insertar -> bindParam(':usuarioU', $usuarioU, PDO::PARAM_STR);
+            $insertar -> bindParam(':contraU', $contraU, PDO::PARAM_STR);
+            $insertar -> bindParam(':permisoU', $permisoU, PDO::PARAM_INT);
+            $insertar -> bindParam(':estadoU', $estadoU, PDO::PARAM_INT);
+            $insertar -> bindParam(':empleadoU', $empleadoU, PDO::PARAM_INT);
+            try {
+                $conexion -> beginTransaction();
+                // Ejecutamos y verificamos que el usuario ha sido insertado.
+                if($insertar -> execute()) {
+                    $responseJSON = 1;
+                }
+                $conexion -> commit();
+            } catch (Exception $e) {
+                $responseJSON = 2;
+                $conexion -> rollback();
+                throw $e;
             }
-            $conexion -> commit();
-        } catch (Exception $e) {
-            $responseJSON = 2;
-            $conexion -> rollback();
-            throw $e;
-        }
 
-        // Finalmente imprimimos respuesta que interpretará AJAX posteriormente.
-        echo json_encode($responseJSON);
+            // Finalmente imprimimos respuesta que interpretará AJAX posteriormente.
+            echo json_encode($responseJSON);
+        }
     }
 
     // Se encarga de capturar el ID del usuario y devolver los datos del mismo.
@@ -126,11 +126,16 @@
         // Capturamos el ID del usuario.
         $id = $_POST['edit_id'];
 
-        $buscar = $conexion -> prepare("SELECT * FROM usuarios WHERE idU = :id");
+        $buscar = $conexion -> prepare("SELECT u.u_id, e.e_nombre, u.u_usuario,
+                                               u.u_permiso, u.u_estado, u.u_empleado
+                                        FROM tbl_usuarios AS u
+                                        LEFT JOIN tbl_permisos AS p ON u.u_permiso = p.p_id
+                                        LEFT JOIN tbl_empleados AS e ON u.u_empleado = e.e_id
+                                        WHERE u.u_id = :id");
         $buscar -> execute(['id' => $id]);
-        $usuarioData = $buscar -> fetch();
+        $data = $buscar -> fetch();
 
-        echo json_encode($usuarioData);
+        echo json_encode($data);
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == "update") {
@@ -139,42 +144,46 @@
         $responseJSON = 0;
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
-        $idU = $_POST['id'];
-        $nameU = $_POST['inputName1'];
-        $addressU = $_POST['inputAddress1'];
-        $phoneU = $_POST['inputPhone1'];
-        $emailU = $_POST['inputEmail1'];
-        $userU = $_POST['inputUser1'];
-        $passU = password_hash($_POST['inputPass1'], PASSWORD_DEFAULT);
-        $roleU = $_POST['inputRole1'];
-        //$data = [':nameU' => $nameU, ':addressU' => $addressU, ':phoneU' => $phoneU, ':emailU' => $emailU, ':userU' => $userU, ':passU' => $passU, ':roleU' => $roleU, ':idU' => $idU];
+        $id = $_POST['id'];
+        $nombreU = mb_strtoupper($_POST['inputNombre1'], 'UTF-8');
+        $usuarioU = $_POST['inputUsuario1'];
+        $contraU = password_hash($_POST['inputContra1'], PASSWORD_DEFAULT);
+        $empleadoU = $_POST['imputEmpleado1'];
+        $estadoU = $_POST['inputEstado1'];
+        $permisoU = $_POST['inputPermiso1'];
 
-        // Pasamos los parámetros a la función actualizará el usuario.
-        $actualizar = $conexion -> prepare('UPDATE usuarios SET nombreU = :nameU, direccionU = :addressU, telefonoU = :phoneU, correoU = :emailU,
-                                            usuarioU = :userU, contraU = :passU, rolU = :roleU WHERE idU = :idU');
-        $actualizar -> bindValue(':nameU', $nameU, PDO::PARAM_STR);
-        $actualizar -> bindValue(':addressU', $addressU, PDO::PARAM_STR);
-        $actualizar -> bindValue(':phoneU', $phoneU, PDO::PARAM_STR);
-        $actualizar -> bindValue(':emailU', $emailU, PDO::PARAM_STR);
-        $actualizar -> bindValue(':userU', $userU, PDO::PARAM_STR);
-        $actualizar -> bindValue(':passU', $passU, PDO::PARAM_STR);
-        $actualizar -> bindValue(':roleU', $roleU, PDO::PARAM_INT);
-        $actualizar -> bindValue(':idU', $idU, PDO::PARAM_INT);
-        try {
-            $conexion -> beginTransaction();
-            // Ejecutamos y verificamos que el usuario ha sido actualizado.
-            if($actualizar -> execute()) {
-                $responseJSON = 1;
+        if ($nombreU == '' || $usuarioU == '' || $contraU == '' || $empleadoU == '' || $estadoU == '' || $permisoU == '') {
+            $responseJSON = 0;
+            echo json_encode($responseJSON);
+        } else {
+            // Pasamos los parámetros a la función actualizará el usuario.
+            $actualizar = $conexion -> prepare('UPDATE tbl_usuarios SET u_nombre = :nombreU, u_usuario = :usuarioU,
+                                                                        u_contra = :contraU, u_permiso = :permisoU,
+                                                                        u_estado = :estadoU, u_empleado = :empleadoU
+                                                                    WHERE u_id = :id');
+            $actualizar -> bindValue(':nombreU', $nombreU, PDO::PARAM_STR);
+            $actualizar -> bindValue(':usuarioU', $usuarioU, PDO::PARAM_STR);
+            $actualizar -> bindValue(':contraU', $contraU, PDO::PARAM_STR);
+            $actualizar -> bindValue(':permisoU', $permisoU, PDO::PARAM_INT);
+            $actualizar -> bindValue(':estadoU', $estadoU, PDO::PARAM_INT);
+            $actualizar -> bindValue(':empleadoU', $empleadoU, PDO::PARAM_INT);
+            $actualizar -> bindValue(':id', $id, PDO::PARAM_INT);
+            try {
+                $conexion -> beginTransaction();
+                // Ejecutamos y verificamos que el usuario ha sido actualizado.
+                if($actualizar -> execute()) {
+                    $responseJSON = 1;
+                }
+                $conexion -> commit();
+            } catch (Exception $e) {
+                $responseJSON = 2;
+                $conexion -> rollback();
+                throw $e;
             }
-            $conexion -> commit();
-        } catch (Exception $e) {
-            $responseJSON = 2;
-            $conexion -> rollback();
-            throw $e;
-        }
 
-        // Finalmente imprimimos respuesta que interpretará AJAX posteriormente.
-        echo json_encode($responseJSON);
+            // Finalmente imprimimos respuesta que interpretará AJAX posteriormente.
+            echo json_encode($responseJSON);
+        }
     }
 
 
@@ -187,7 +196,7 @@
         $id = $_POST['del_id'];
 
         // Pasamos los parámetros a la función que preparara la sentencia SQL de eliminación.
-        $eliminar = $conexion -> prepare("DELETE FROM usuarios WHERE idU = :id");
+        $eliminar = $conexion -> prepare("DELETE FROM tbl_usuarios WHERE u_id = :id");
 
         if ($eliminar -> execute(['id' => $id])) {
           $responseJSON = 1;

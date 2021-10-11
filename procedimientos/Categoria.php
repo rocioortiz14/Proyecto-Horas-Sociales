@@ -59,8 +59,8 @@
         $JSON = 0;
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
-        $categoriaC = $_POST['inputCategoria'];
-        $descC = $_POST['inputDesc'];
+        $categoriaC =  mb_strtoupper($_POST['inputCategoria'], 'UTF-8');
+        $descC = mb_strtoupper($_POST['inputDesc'], 'UTF-8');
 
         if ($categoriaC == '' || $categoriaC == null || $descC == '' || $descC == null) {
             $JSON = 0; // Para el caso de datos vacios o nulos.
@@ -100,8 +100,8 @@
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
         $idC = $_POST['id'];
-        $categoriaC = $_POST['inputCategoria1'];
-        $descC = $_POST['inputDesc1'];
+        $categoriaC =  mb_strtoupper($_POST['inputCategoria1'], 'UTF-8');
+        $descC = mb_strtoupper($_POST['inputDesc1'], 'UTF-8');
 
         if ($categoriaC == '' || $categoriaC == null || $descC == '' || $descC == null) {
             $JSON = 0; // Para el caso de datos vacios o nulos.

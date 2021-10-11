@@ -1,12 +1,8 @@
 <?php
     // Requerimos el archivo de control de sesiones.
     include 'configuracion/sesion.php';
-    include 'configuracion/conexion.php';
-
-    $query = "SELECT * FROM tbl_empresa WHERE identificador = 1";
-    $empresa = $conexion -> prepare($query);
-    $empresa -> execute();
-    $resultado = $empresa -> fetch();
+    // Requerimos el archivo de administracion multimedia de la empresa.
+    include 'configuracion/multimedia.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +29,7 @@
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="inicio.php"><i data-feather="home"></i></a></li>
                     <li class="breadcrumb-item active">Empresa</li>
                   </ol>
                 </div>
@@ -48,6 +44,9 @@
                     <strong>LOGO DE LA EMPRESA</strong>
                   </div>
                   <center><img src="imagenes/uploads/<?php echo $resultado[12]; ?>" alt="logo empresa" class="img img-fluid logoImg"></center>
+                  <div class="alert alert-light mt-4">
+                      <strong><i class="fa fa-info-circle"></i> </strong>Seleccionar imagen para logo de la empresa con tamano: 262 x 115.
+                  </div>
               </div>
               <div class="col-8 mt-3">
                 <div class="alert alert-primary text-center">
@@ -194,6 +193,8 @@
                                       let path = "imagenes/uploads/"+data.src;
                                       $(".logoImg").attr("src", path);
                                       $(".logoImg").fadeOut(1).fadeIn(1000);
+                                      $(".logoLeft").attr("src", path);
+                                      $(".logoLeft").fadeOut(1).fadeIn(1000);
                                       $("#logo").val('');
                                       Swal.fire({
                                           icon: 'success',

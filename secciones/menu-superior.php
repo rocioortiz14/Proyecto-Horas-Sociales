@@ -22,7 +22,7 @@
                 <ul class="header-level-menu menu-to-be-close">
                   <li><a href="usuarios.php" data-original-title="" title=""><i data-feather="user"></i><span>Usuarios</span></a></li>
                   <li><a href="permisos.php" data-original-title="" title=""><i data-feather="user-x"></i><span>Permisos</span></a></li>
-                  <hr>
+                  <li><a href="conexiones.php" data-original-title="" title=""><i data-feather="activity"></i><span>Conexiones</span></a></li>
                   <li><a href="empresa.php" data-original-title="" title=""><i data-feather="heart"></i><span>Empresa</span></a></li>
                   <li><a href="empleados.php" data-original-title="" title=""><i data-feather="award"></i><span>Empleados</span></a></li>
                 </ul>
@@ -54,7 +54,7 @@
               </li>
               <li class="profile-nav onhover-dropdown p-0 me-0">
                 <div class="media profile-media"><img class="b-r-10" src="assets/images/dashboard/profile.jpg" alt="">
-                  <div class="media-body"><span>Emay Walter</span>
+                  <div class="media-body"><span><?php echo $_SESSION["usuario"]; ?></span>
                     <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                   </div>
                 </div>

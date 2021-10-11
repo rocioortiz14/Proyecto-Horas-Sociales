@@ -1,4 +1,7 @@
-
+<?php
+    // Requerimos el archivo de administracion multimedia de la empresa.
+    include 'configuracion/multimedia.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -43,7 +46,7 @@
             <div>
               <div class="login-main">
                 <form class="theme-form" id="accesoFormulario">
-                  <img src="imagenes/solecon.jpeg" class="img-fluid offset-1" alt="">
+                  <img src="imagenes/uploads/<?php echo $resultado[12]; ?>" class="img-fluid offset-1" alt="">
                   <h4 class="mt-4 text-center">SOLECON ELECTRIC</h4>
                   <p class="text-center">Sistema de inventarios</p>
                   <div class="form-group">

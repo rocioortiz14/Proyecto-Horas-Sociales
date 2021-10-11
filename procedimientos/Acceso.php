@@ -4,6 +4,57 @@
     //echo $conexion;
     session_start();
 
+    // Para capturar la dirección IP, del usuario que se conecta.
+    function capturarIP()
+    {
+      if (isset($_SERVER["HTTP_CLIENT_IP"]))
+          {
+              return $_SERVER["HTTP_CLIENT_IP"];
+          }
+          elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+          {
+              return $_SERVER["HTTP_X_FORWARDED_FOR"];
+          }
+          elseif (isset($_SERVER["HTTP_X_FORWARDED"]))
+          {
+              return $_SERVER["HTTP_X_FORWARDED"];
+          }
+          elseif (isset($_SERVER["HTTP_FORWARDED_FOR"]))
+          {
+              return $_SERVER["HTTP_FORWARDED_FOR"];
+          }
+          elseif (isset($_SERVER["HTTP_FORWARDED"]))
+          {
+              return $_SERVER["HTTP_FORWARDED"];
+          }
+          else
+          {
+              return $_SERVER["REMOTE_ADDR"];
+          }
+    }
+
+    // Función encargada de insertar en la tabla de auditoria de conexiones.
+    function insertarIP($id, $ip, $conexion) {
+
+        // Capturamos los datos del formulario y los almacenamos en las variables.
+        $userID = $id;
+        $userIP = $ip;
+
+        // Pasamos los parámetros a la función insertar usuarios.
+        // Alamacenamos sentencia SQL (Procedimiento almacenado) en variable.
+        $sql = "INSERT INTO tbl_ip (i_id_user, i_ip) VALUES (:userID, :userIP)";
+        // Preparamos Procedimiento almacenado, para traer todos los datos de la tabla usuarios.
+        $insertar = $conexion -> prepare($sql);
+        // Ejecutamos sentencia SQL.
+        $insertar -> execute(['userID' => $userID, 'userIP' => $userIP]);
+
+        $ultimoID = $conexion -> lastInsertId();
+
+        return $ultimoID;
+        //$insertIp = UsersDB::insertIp($userId, $userIp);
+
+    }
+
     // Para ejecutar el proceso de logueo, se verifica si la acción es "login" y el metodo "POST".
     if(isset($_POST['action']) && $_POST['action'] == "acceso"){
 
@@ -46,6 +97,10 @@
                         $_SESSION["estado"] = $datos[5];
                         $_SESSION["empleado"] = $datos[6];
                     }
+
+                    // Almacenamos IP.
+                    $ip = capturarIP();
+                    $_SESSION["ultima"] = insertarIP($_SESSION["id"], $ip, $conexion);
                     // Insertamos el proceso de "Exito" en la variable que interpreta AJAX.
                     $JSON = 1;
                 }
@@ -63,6 +118,6 @@
         // Imprimos el valor a pasar, que interpretará AJAX.
         echo json_encode($JSON);
     }
-    
+
 
 ?>

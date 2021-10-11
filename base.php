@@ -1,3 +1,9 @@
+<?php
+    // Requerimos el archivo de control de sesiones.
+    include 'configuracion/sesion.php';
+    // Requerimos el archivo de administracion multimedia de la empresa.
+    include 'configuracion/multimedia.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,7 +29,7 @@
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="inicio.php"><i data-feather="home"></i></a></li>
                     <li class="breadcrumb-item">Base</li>
                     <li class="breadcrumb-item active">Sample Base</li>
                   </ol>
@@ -35,7 +41,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
-                
+
               </div>
             </div>
           </div>

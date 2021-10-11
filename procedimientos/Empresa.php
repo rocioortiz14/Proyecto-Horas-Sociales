@@ -12,15 +12,15 @@
             $JSON = 0;
 
             // Capturamos los datos del formulario y los almacenamos en las variables.
-            $empresa = $_POST['empresa'];
-            $eslogan = $_POST['eslogan'];
-            $direccion = $_POST['direccion'];
+            $empresa = mb_strtoupper($_POST['empresa'], 'UTF-8');
+            $eslogan = mb_strtoupper($_POST['eslogan'], 'UTF-8');
+            $direccion = mb_strtoupper($_POST['direccion'], 'UTF-8');
             $correo = $_POST['correo'];
             $telefono1 = $_POST['telefono1'];
             $telefono2 = $_POST['telefono2'];
             $movil1 = $_POST['movil1'];
             $movil2 = $_POST['movil2'];
-            $razon = $_POST['razon'];
+            $razon = mb_strtoupper($_POST['razon'], 'UTF-8');
             $nrc = $_POST['nrc'];
             $nit = $_POST['nit'];
             $id = 1;

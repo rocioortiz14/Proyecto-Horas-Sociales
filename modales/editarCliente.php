@@ -2,7 +2,7 @@
 <div class="modal fade" id="editarClModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header bg-primary">
+      <div class="modal-header bg-success">
         <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-edit"></i> EDITAR CLIENTE</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-        <a href="#" class="btn btn-primary" id="editar" name="editar"> <i class="fa fa-save"></i> Guardar</a>
+        <a href="#" class="btn btn-success" id="editar" name="editar"> <i class="fa fa-save"></i> Guardar</a>
         </form>
       </div>
     </div>

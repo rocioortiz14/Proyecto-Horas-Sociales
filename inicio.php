@@ -1,3 +1,9 @@
+<?php
+    // Requerimos el archivo de control de sesiones.
+    include 'configuracion/sesion.php';
+    // Requerimos el archivo de administracion multimedia de la empresa.
+    include 'configuracion/multimedia.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

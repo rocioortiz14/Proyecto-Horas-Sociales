@@ -74,11 +74,11 @@
         // Capturamos los datos del formulario y los almacenamos en las variables.
         $proveedorCod = $_POST['inputCodigo'];
         $proveedorNit = $_POST['inputNit'];
-        $proveedorN = $_POST['inputNombre'];
-        $proveedorD = $_POST['inputDireccion'];
+        $proveedorN = mb_strtoupper($_POST['inputNombre'], 'UTF-8');
+        $proveedorD = mb_strtoupper($_POST['inputDireccion'], 'UTF-8');
         $proveedorT = $_POST['inputTelefono'];
         $proveedorC = $_POST['inputCorreo'];
-        $proveedorR = $_POST['inputRazon'];
+        $proveedorR = mb_strtoupper($_POST['inputRazon'], 'UTF-8');
 
         if ($proveedorCod == '' || $proveedorCod == null ||
             $proveedorNit == '' || $proveedorNit == null ||
@@ -144,11 +144,11 @@
         $IdPrv = $_POST['id'];
         $proveedorCod = $_POST['inputCodigo1'];
         $proveedorNit = $_POST['inputNit1'];
-        $proveedorN = $_POST['inputNombre1'];
-        $proveedorD = $_POST['inputDireccion1'];
+        $proveedorN = mb_strtoupper($_POST['inputNombre1']);
+        $proveedorD = mb_strtoupper($_POST['inputDireccion1']);
         $proveedorT = $_POST['inputTelefono1'];
         $proveedorC = $_POST['inputCorreo1'];
-        $proveedorR = $_POST['inputRazon1'];
+        $proveedorR = mb_strtoupper($_POST['inputRazon1']);
 
         if ($proveedorCod == '' || $proveedorCod == null ||
             $proveedorNit == '' || $proveedorNit == null ||

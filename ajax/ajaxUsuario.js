@@ -45,31 +45,30 @@ $(document).ready(function(){
         });
     } // Aquí termina la función encargada de mostrar los usuarios.
 
-    // Mediante él evento de click, mostramos Modal de inserción de usuarios.
-    $(".btnAddU").click(function() {
-        $("#add_UModal").modal("show");
-        //$("#inputUser").val("");
-        //$("#inputPass").val("");
-    });
-
     // Mediante Ajax, al dar clic en en el boton guardar se almacenan todos los datos (Serialize).
-    $("#insert").click(function(e){
-        if ($("#formInsertU")[0].checkValidity()) {
+    $("#guardar").click(function(e){
+        if ($("#formAUsuario")[0].checkValidity()) {
           e.preventDefault();
           $.ajax({
             url: "procedimientos/Usuarios.php",
             type: "POST",
-            data: $("#formInsertU").serialize()+"&action=insert",
+            data: $("#formAUsuario").serialize()+"&action=insert",
             success:function(response){
                 data = JSON.parse(response);
-                if (data === 1) {
+                if (data === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Oops!',
+                        text: 'Rellene todos los campos!'
+                    });
+                } else if (data === 1) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Éxito!',
                         text: 'Usuario insertado!'
                     });
-                    $("#add_UModal").modal('hide');
-                    $("#formInsertU")[0].reset();
+                    $("#agregarUModal").modal('hide');
+                    $("#formAUsuario")[0].reset();
                     mostrarUsuarios();
                 } else if (data === 2) {
                     Swal.fire({
@@ -77,8 +76,8 @@ $(document).ready(function(){
                         title: 'Alerta!',
                         text: 'Usuario no insertado!'
                     });
-                    $("#add_UModal").modal('hide');
-                    $("#formInsertU")[0].reset();
+                    $("#agregarUModal").modal('hide');
+                    $("#formAUsuario")[0].reset();
                     mostrarUsuarios();
                 } else {
                     Swal.fire({
@@ -86,11 +85,10 @@ $(document).ready(function(){
                         title: 'Error!',
                         text: 'Ha sucedido un error!'
                     });
-                    $("#add_UModal").modal('hide');
-                    $("#formInsertU")[0].reset();
+                    $("#agregarUModal").modal('hide');
+                    $("#formAUsuario")[0].reset();
                     mostrarUsuarios();
                 }
-
             },
             error: function(e){
               console.log(e);
@@ -111,13 +109,11 @@ $(document).ready(function(){
             data = JSON.parse(response);
 
             $("#id").val(data[0]);
-            $("#inputName1").val(data[1]);
-            $("#inputAddress1").val(data[2]);
-            $("#inputPhone1").val(data[3]);
-            $("#inputEmail1").val(data[4]);
-            $("#inputUser1").val(data[5]);
-            $("#inputPass1").val("");
-            $("#inputRole1").val(data[7]);
+            $("#inputNombre1").val(data[1]);
+            $("#inputUsuario1").val(data[2]);
+            $("#imputEmpleado1").val(data[5]);
+            $("#inputPermiso1").val(data[3]);
+            $("#inputEstado1").val(data[4]);
           },
           error: function(e){
             console.log(e);
@@ -126,13 +122,13 @@ $(document).ready(function(){
     }); // Aquí termina la función encargada de mostrar los datos del usuario en el formulario.
 
     // Mediante Ajax, al dar clic en en el boton actualizar, se almacenan todos los datos actualizados (Serialize).
-    $("#update").click(function(e){
-        if ($("#formUpdateU")[0].checkValidity()) {
+    $("#editar").click(function(e){
+        if ($("#formEditUsuario")[0].checkValidity()) {
           e.preventDefault();
           $.ajax({
             url: "procedimientos/Usuarios.php",
             type: "POST",
-            data: $("#formUpdateU").serialize()+"&action=update",
+            data: $("#formEditUsuario").serialize()+"&action=update",
             success:function(response){
                 data = JSON.parse(response);
 
@@ -142,8 +138,8 @@ $(document).ready(function(){
                         title: 'Éxito!',
                         text: 'Usuario actualizado!'
                     });
-                    $("#edit_UModal").modal('hide');
-                    $("#formUpdateU")[0].reset();
+                    $("#editarUModal").modal('hide');
+                    $("#formEditUsuario")[0].reset();
                     mostrarUsuarios();
                 } else if (data === 2) {
                     Swal.fire({
@@ -151,8 +147,8 @@ $(document).ready(function(){
                         title: 'Alerta!',
                         text: 'Usuario no actualizado!'
                     });
-                    $("#edit_UModal").modal('hide');
-                    $("#formUpdateU")[0].reset();
+                    $("#editarUModal").modal('hide');
+                    $("#formEditUsuario")[0].reset();
                     mostrarUsuarios();
                 } else {
                     Swal.fire({
@@ -160,8 +156,8 @@ $(document).ready(function(){
                         title: 'Error!',
                         text: 'Ha sucedido un error!'
                     });
-                    $("#edit_UModal").modal('hide');
-                    $("#formUpdateU")[0].reset();
+                    $("#editarUModal").modal('hide');
+                    $("#formEditUsuario")[0].reset();
                     mostrarUsuarios();
                 }
             },

@@ -1,6 +1,8 @@
 <?php
-  // Requerimos el archivo de control de sesiones.
-  include 'configuracion/sesion.php';
+    // Requerimos el archivo de control de sesiones.
+    include 'configuracion/sesion.php';
+    // Requerimos el archivo de administracion multimedia de la empresa.
+    include 'configuracion/multimedia.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,7 +29,7 @@
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php"><i data-feather="home"></i></a> Panel principal</li>
+                    <li class="breadcrumb-item"><a href="inicio.php"><i data-feather="home"></i></a> Panel principal</li>
                     <li class="breadcrumb-item active"> Usuarios</li>
                   </ol>
                 </div>
@@ -38,7 +40,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
-                <a href="#" class="btn btn-primary btn-md"> <i class="fa fa-plus"></i> Agregar usuario</a>
+                <a href="#" class="btn btn-primary btn-md" id="btnAdd" data-bs-toggle="modal" data-bs-target="#agregarUModal"><i class="fa fa-plus"></i> Agregar usuario</a>
                 <hr>
                 <div class="table-responsive-sm" id="mostrarTablaUsuarios"></div>
               </div>
@@ -49,7 +51,11 @@
         <?php include 'secciones/pie-pagina.php'; // Incluimos el pie de pagina de la plantilla. ?>
       </div>
     </div>
-    <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
+    <?php
+        include 'modales/agregarUsuario.php';
+        include 'modales/editarUsuario.php';
+
+        include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
     <script src="ajax/ajaxUsuario.js" charset="utf-8"></script>
   </body>
 </html>

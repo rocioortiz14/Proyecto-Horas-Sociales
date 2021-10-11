@@ -20,3 +20,10 @@
 <!-- Alertas -->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js" charset="utf-8"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('.js-example-basic-single').select2();
+});
+</script>

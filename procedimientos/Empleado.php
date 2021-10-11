@@ -5,7 +5,7 @@
     // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
     require_once '../configuracion/conexion.php';
 
-    $cargar = $conexion -> prepare("SELECT * FROM tbl_empleado");
+    $cargar = $conexion -> prepare("SELECT * FROM tbl_empleados");
 
     $cargar -> execute();
     /*Almacenamos el resultado de fetchAll en una variable*/
@@ -69,12 +69,12 @@
         $JSON = 0;
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
-        $empleadosC = $_POST['inputCodigo'];
-        $empleadosN = $_POST['inputNombre'];
+        $empleadosCo = $_POST['inputCodigo'];
+        $empleadosN = mb_strtoupper($_POST['inputNombre'], 'UTF-8');
         $empleadosT = $_POST['inputTelefono'];
         $empleadosC = $_POST['inputCorreo'];
-        $empleadosD = $_POST['inputDireccion'];
-        $empleadosCa = $_POST['inputCargo'];
+        $empleadosD = mb_strtoupper($_POST['inputDireccion'], 'UTF-8');
+        $empleadosCa = mb_strtoupper($_POST['inputCargo'], 'UTF-8');
 
         if ($empleadosC == '' || $empleadosC == null ||
             $empleadosN == '' || $empleadosN == null ||
@@ -85,20 +85,20 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
           // Pasamos los parámetros para insertar empleados y almacenamos la sentencia SQL en variable.
-          $insertar = $conexion -> prepare("INSERT INTO tbl_empleado (e_codigo,
+          $insertar = $conexion -> prepare("INSERT INTO tbl_empleados (e_codigo,
                                                                         e_nombre,
                                                                         e_telefono,
                                                                         e_correo,
                                                                         e_direccion,
                                                                         e_cargo)
-                                                                        VALUES (:empleadosC,
+                                                                        VALUES (:empleadosCo,
                                                                         :empleadosN,
                                                                         :empleadosT,
                                                                         :empleadosC,
                                                                         :empleadosD,
                                                                         :empleadosCa)");
           // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-          $insertar -> bindParam(':empleadosC', $empleadosC, PDO::PARAM_STR);
+          $insertar -> bindParam(':empleadosCo', $empleadosCo, PDO::PARAM_STR);
           $insertar -> bindParam(':empleadosN', $empleadosN, PDO::PARAM_STR);
           $insertar -> bindParam(':empleadosT', $empleadosT, PDO::PARAM_STR);
           $insertar -> bindParam(':empleadosC', $empleadosC, PDO::PARAM_STR);
@@ -120,7 +120,7 @@
         // Capturamos el ID del empleados.
         $id = $_POST['edit_id'];
 
-        $buscar = $conexion -> prepare("SELECT * FROM tbl_empleado WHERE id_empl = :id");
+        $buscar = $conexion -> prepare("SELECT * FROM tbl_empleados WHERE e_id = :id");
         $buscar -> execute(['id' => $id]);
         $empleadoData = $buscar -> fetch();
 
@@ -134,12 +134,12 @@
 
         // Capturamos los datos del formulario y los almacenamos en las variables.
         $idEmp = $_POST['id'];
-        $empleadosC = $_POST['inputCodigo1'];
-        $empleadosN = $_POST['inputNombre1'];
+        $empleadosCo = $_POST['inputCodigo1'];
+        $empleadosN = mb_strtoupper($_POST['inputNombre1'], 'UTF-8');
         $empleadosT = $_POST['inputTelefono1'];
         $empleadosC = $_POST['inputCorreo1'];
-        $empleadosD = $_POST['inputDireccion1'];
-        $empleadosCa = $_POST['inputCargo1'];
+        $empleadosD = mb_strtoupper($_POST['inputDireccion1'], 'UTF-8');
+        $empleadosCa = mb_strtoupper($_POST['inputCargo1'], 'UTF-8');
 
         if ($empleadosC == '' || $empleadosC == null ||
             $empleadosN == '' || $empleadosN == null ||
@@ -150,15 +150,15 @@
             $JSON = 0; // Para el caso de datos vacios o nulos.
         } else {
             // Pasamos los parámetros a la función actualizará el empleados.
-            $actualizar = $conexion -> prepare('UPDATE tbl_empleado SET
-                                                  e_codigo = :empleadosC,
+            $actualizar = $conexion -> prepare('UPDATE tbl_empleados SET
+                                                  e_codigo = :empleadosCo,
                                                   e_nombre = :empleadosN,
                                                   e_telefono = :empleadosT,
                                                   e_correo = :empleadosC,
                                                   e_direccion = :empleadosD,
                                                   e_cargo = :empleadosCa
-                                                  WHERE id_empl = :idEmp');
-            $actualizar -> bindValue(':empleadosC', $empleadosC, PDO::PARAM_STR);
+                                                  WHERE e_id = :idEmp');
+            $actualizar -> bindValue(':empleadosCo', $empleadosCo, PDO::PARAM_STR);
             $actualizar -> bindValue(':empleadosN', $empleadosN, PDO::PARAM_STR);
             $actualizar -> bindValue(':empleadosT', $empleadosT, PDO::PARAM_STR);
             $actualizar -> bindValue(':empleadosC', $empleadosC, PDO::PARAM_STR);
@@ -187,7 +187,7 @@
         $id = $_POST['del_id'];
 
         // Pasamos los parámetros a la función que preparara la sentencia SQL de eliminación.
-        $eliminar = $conexion -> prepare("DELETE FROM tbl_empleado WHERE id_empl = :id");
+        $eliminar = $conexion -> prepare("DELETE FROM tbl_empleados WHERE e_id = :id");
 
         if ($eliminar -> execute(['id' => $id])) {
           $JSON = 1;
