@@ -42,8 +42,8 @@
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="shopping-bag"></i><span>Compras</span></a>
                     <ul class="sidebar-submenu">
-                      <li><a href="chart-widget.html">Generar Compra</a></li>
-                      <li><a href="general-widget.html">Administrar Compras</a></li>
+                      <li><a href="generar-compras.php">Generar Compra</a></li>
+                      <li><a href="compras.php">Administrar Compras</a></li>
                     </ul>
                   </li>
 
