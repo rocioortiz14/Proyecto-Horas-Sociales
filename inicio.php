@@ -41,7 +41,7 @@
             <div class="row">
               <!-- GENERAR FACTURA DE VENTA -->
               <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <a href="#">
+                <a href="generar-ventas.php">
                   <div class="card o-hidden">
                     <div class="card-body">
                       <div class="ecommerce-widgets media">

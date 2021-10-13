@@ -35,8 +35,8 @@
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="shopping-cart"></i><span>Ventas</span></a>
                     <ul class="sidebar-submenu">
-                      <li><a href="chart-widget.html">Generar Venta</a></li>
-                      <li><a href="general-widget.html">Administrar Ventas</a></li>
+                      <li><a href="generar-ventas.php">Generar Venta</a></li>
+                      <li><a href="ventas.php">Administrar Ventas</a></li>
                     </ul>
                   </li>
 

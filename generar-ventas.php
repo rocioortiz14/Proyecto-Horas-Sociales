@@ -16,22 +16,22 @@
           <div class="mx-auto col-11">
               <div class="row">
                   <div class="col-3 mt-4">
-                      <a href="compras.php" class="btn btn-info btn-sm"> <i class="fa fa-reply"></i> REGRESAR</a>
+                      <a href="ventas.php" class="btn btn-info btn-sm"> <i class="fa fa-reply"></i> REGRESAR</a>
                   </div>
                   <div class="col-9 mt-4">
                       <a href="#" class="btn btn-danger btn-sm float-end"> <strong>(F2)</strong> FACTURAR</a>
-                      <a href="#" class="btn btn-success btn-sm float-end me-1"> <strong>(F1)</strong> REGISTRAR PROVEEDOR</a>
+                      <a href="#" class="btn btn-success btn-sm float-end me-1"> <strong>(F1)</strong> REGISTRAR CLIENTE</a>
                   </div>
                   <div class="col-4 mt-3">
                       <div class="form-group">
-                          <label for="proveedores" class="fw-bold text-dark">Provedor(*): </label>
-                          <select class="form-control js-example-theme-single text-dark" name="proveedores" id="proveedores" style="width: 100%;">
+                          <label for="clientes" class="fw-bold text-dark">Clientes(*): </label>
+                          <select class="form-control js-example-theme-single text-dark" name="clientes" id="clientes" style="width: 100%;">
                               <option value="">Seleccionar...</option>
                               <?php
-                                  $stmt1 = $conexion -> query("SELECT * FROM tbl_proveedores");
+                                  $stmt1 = $conexion -> query("SELECT * FROM tbl_clientes");
                                   // and somewhere later:
                                   while ($data = $stmt1-> fetch()) {
-                                      echo '<option class="text-white" value="'.$data[0].'">'.$data[1].' | '.$data[3].'</option>';
+                                      echo '<option class="text-white" value="'.$data[0].'">'.$data[0].' | '.$data[1].' '.$data[2].'</option>';
                                   }
                               ?>
                           </select>
@@ -45,7 +45,7 @@
                   </div>
                   <div class="col-2 mt-3">
                       <div class="form-group">
-                          <label for="fechaC" class="fw-bold text-dark">Fecha compra(*): </label>
+                          <label for="fechaC" class="fw-bold text-dark">Fecha venta(*): </label>
                           <input class="form-control form-control-md" type="date" name="fechaC" id="fechaC">
                       </div>
                   </div>
@@ -57,7 +57,7 @@
                   </div>
                   <div class="col-2 mt-3">
                       <div class="form-group">
-                          <label for="numero" class="fw-bold text-dark">N° de compra: </label>
+                          <label for="numero" class="fw-bold text-dark">N° de venta: </label>
                           <input class="form-control form-control-md" type="text" name="numero" id="numero">
                       </div>
                   </div>
@@ -86,7 +86,6 @@
                               <th class="text-center" scope="col">#</th>
                               <th class="text-left" scope="col">Producto</th>
                               <th class="text-center" scope="col">Cantidad</th>
-                              <th class="text-center" scope="col">Precio compra</th>
                               <th class="text-center" scope="col">Precio venta</th>
                               <th class="text-center" scope="col">Sub-total</th>
                               <th class="text-center" scope="col"></th>
@@ -95,27 +94,24 @@
                           <tbody>
                             <tr>
                               <th style="width: 3%;" scope="row">1</th>
-                              <td style="width: 41%;">Maisena</td>
+                              <td style="width: 55%;">Maisena</td>
                               <td style="width: 10%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
                               <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
                               <td style="width: 15%;">$ </td>
                               <td style="width: 3%;"> <a href="#" class="text-danger"> <i class="fa fa-trash fa-lg"></i> </a> </td>
                             </tr>
                             <tr>
                               <th style="width: 3%;" scope="row">1</th>
-                              <td style="width: 41%;">Azucar</td>
+                              <td style="width: 55%;">Azucar</td>
                               <td style="width: 10%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
                               <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
                               <td style="width: 15%;">$ </td>
                               <td style="width: 3%;"> <a href="#" class="text-danger"> <i class="fa fa-trash fa-lg"></i> </a> </td>
                             </tr>
                             <tr>
                               <th style="width: 3%;" scope="row">1</th>
-                              <td style="width: 41%;">Sal</td>
+                              <td style="width: 55%;">Sal</td>
                               <td style="width: 10%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
                               <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
                               <td style="width: 15%;">$ </td>
                               <td style="width: 3%;"> <a href="#" class="text-danger"> <i class="fa fa-trash fa-lg"></i> </a> </td>
@@ -131,7 +127,7 @@
                   <div class="col-3 mt-3">
                     <div class="alert" style="background-color: #e5e5e5;">
                         <p><strong class="text-dark">Cantidad productos: </strong> <em class="float-end text-dark">3</em> </p>
-                        <p><strong class="text-dark">Valor de la compra: </strong> <em class="float-end text-dark">$</em> </p>
+                        <p><strong class="text-dark">Valor de la venta: </strong> <em class="float-end text-dark">$</em> </p>
                         <p><strong class="text-dark">IVA(%): </strong> <em class="float-end text-dark">$</em> </p>
                     </div>
                     <div class="alert" role="alert" style="background-color: #afafaf;">

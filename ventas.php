@@ -25,12 +25,12 @@
             <div class="page-title">
               <div class="row">
                 <div class="col-6">
-                  <h3> Administracion de compras</h3>
+                  <h3> Administracion de ventas</h3>
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="inicio.php"><i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item">Compras</li>
+                    <li class="breadcrumb-item">Ventas</li>
                   </ol>
                 </div>
               </div>
@@ -40,7 +40,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
-                  <a href="generar-compras.php" class="btn btn-primary btn-md"> <i class="fa fa-plus"></i> Generar compras</a>
+                  <a href="generar-ventas.php" class="btn btn-primary btn-md"> <i class="fa fa-plus"></i> Generar ventas</a>
                   <hr>
                   <div class="table-responsive-md" id="mostrarTablaCompras"></div>
               </div>
