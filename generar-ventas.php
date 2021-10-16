@@ -20,7 +20,7 @@
                   </div>
                   <div class="col-9 mt-4">
                       <a href="#" class="btn btn-danger btn-sm float-end"> <strong>(F2)</strong> FACTURAR</a>
-                      <a href="#" class="btn btn-success btn-sm float-end me-1"> <strong>(F1)</strong> REGISTRAR CLIENTE</a>
+                      <a href="#" class="btn btn-success btn-sm float-end me-1" id="btnAdd" data-bs-toggle="modal" data-bs-target="#agregarClModal"> <strong>(F1)</strong> REGISTRAR CLIENTE</a>
                   </div>
                   <div class="col-4 mt-3">
                       <div class="form-group">
@@ -137,6 +137,8 @@
               </div>
           </div>
       </div>
+      <?php include 'modales/agregarCliente.php'; // Incluimos los archivos js a la plantilla. ?>
       <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
+      <script src="ajax/ajaxVenta.js"></script>
   </body>
 </html>

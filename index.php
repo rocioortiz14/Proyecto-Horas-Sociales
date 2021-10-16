@@ -1,6 +1,12 @@
 <?php
-    // Requerimos el archivo de administracion multimedia de la empresa.
-    include 'configuracion/multimedia.php';
+    // Incluimos el archivo de conexion.
+    include 'configuracion/conexion.php';
+
+    // SQL para consultar y mostrar los datos de la empresa en el ADMIN.
+    $query = "SELECT * FROM tbl_empresa WHERE identificador = 1";
+    $empresa = $conexion -> prepare($query);
+    $empresa -> execute();
+    $resultado = $empresa -> fetch();
 ?>
 <!DOCTYPE html>
 <html lang="en">
