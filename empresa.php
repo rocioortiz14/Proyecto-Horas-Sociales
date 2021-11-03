@@ -173,7 +173,7 @@
                       if(img.length > 0) {
                           dataEmpresa.append('logo', img);
                           dataEmpresa.append('action', action);
-                          console.log(Object.fromEntries(dataEmpresa));
+                          //console.log(Object.fromEntries(dataEmpresa));
                           $.ajax({
                               url: "procedimientos/Empresa.php",
                               type: "POST",

@@ -25,7 +25,7 @@
                   <div class="col-4 mt-3">
                       <div class="form-group">
                           <label for="clientes" class="fw-bold text-dark">Clientes(*): </label>
-                          <select class="form-control js-example-theme-single text-dark" name="clientes" id="clientes" style="width: 100%;">
+                          <select class="form-control select2 text-dark" name="clientes" id="clientes" style="width: 100%;">
                               <option value="">Seleccionar...</option>
                               <?php
                                   $stmt1 = $conexion -> query("SELECT * FROM tbl_clientes");
