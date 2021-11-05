@@ -79,7 +79,7 @@ $(document).ready(function(){
         } else {
             dataProducto.append('imagen', img);
             dataProducto.append('action', action);
-            console.log(Object.fromEntries(dataProducto));
+            //console.log(Object.fromEntries(dataProducto));
 
             $.ajax({
                 url: "procedimientos/Producto.php",
@@ -96,13 +96,15 @@ $(document).ready(function(){
                             title: 'Oops!',
                             text: 'Imagen demasiado pesada!'
                         });
-                    } else if (data.json === 1) {
+                    } else if (data === 1) {
+                        /*
                         let path = "imagenes/uploads/"+data.src;
                         $(".logoImg").attr("src", path);
                         $(".logoImg").fadeOut(1).fadeIn(1000);
                         $(".logoLeft").attr("src", path);
                         $(".logoLeft").fadeOut(1).fadeIn(1000);
                         $("#logo").val('');
+                        */
                         Swal.fire({
                             icon: 'success',
                             title: 'Éxito!',

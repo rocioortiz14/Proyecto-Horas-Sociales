@@ -59,32 +59,141 @@
 ?>
 
 <?php
-      if (isset($_POST['action']) && $_POST['action'] == "insert") {
+    if (isset($_POST['action']) && $_POST['action'] == "insert") {
 
         // Variable que almacena respuesta para el AJAX.
         $JSON = 0;
+        $imagen = '';
+        $imagenFinal = '';
+        $fecha = '';
+        $insertar = '';
 
-        // Capturamos los datos del formulario y los almacenamos en las variables.
-        $categoriaC =  mb_strtoupper($_POST['inputCategoria'], 'UTF-8');
-        $descC = mb_strtoupper($_POST['inputDesc'], 'UTF-8');
-
-        if ($categoriaC == '' || $categoriaC == null || $descC == '' || $descC == null) {
-            $JSON = 0; // Para el caso de datos vacios o nulos.
-        } else {
-          // Pasamos los parámetros para insertar permiso y almacenamos la sentencia SQL en variable.
-          $insertar = $conexion -> prepare("INSERT INTO tbl_productos (c_nombre, c_desc) VALUES (:categoriaC, :descC)");
-          // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-          $insertar -> bindParam(':categoriaC', $categoriaC, PDO::PARAM_STR);
-          $insertar -> bindParam(':descC', $descC, PDO::PARAM_STR);
-          if($insertar -> execute()) {
-              $JSON = 1; // Se procede a insertar.
-          } else {
-            $JSON = 2; // Error en la inserción.
-          }
+        if (isset($_FILES['imagen'])) {
+            // code...
+            $imagen = 'IMG-616f72f7244094.94613696.jpg';
         }
 
-        // Finalmente imprimimos respuesta que interpretará AJAX posteriormente.
-        echo json_encode($JSON);
+        if (isset($_POST['inputFecha'])) {
+            // code...
+            $fecha = '';
+        } else {
+            // code...
+            $fecha = $_POST['inputFecha'];
+        }
+
+        $producto = mb_strtoupper($_POST['inputProducto'], 'UTF-8');
+        $descripcion = mb_strtoupper($_POST['inputDesc'], 'UTF-8');
+        $categoria = mb_strtoupper($_POST['inputCategoria'], 'UTF-8');
+        $stockIni = $_POST['inputStockIni'];
+        $codigo = mb_strtoupper($_POST['inputCodigo'], 'UTF-8');
+        $check1 = $_POST['inputCheck'];
+        $presentacion = $_POST['inputPresentacion'];
+
+        # getting image data and store them in var
+        $img_name = $_FILES['imagen']['name'];
+        $img_size = $_FILES['imagen']['size'];
+        $tmp_name = $_FILES['imagen']['tmp_name'];
+        $error    = $_FILES['imagen']['error'];
+
+        # get image extension store it in var
+        $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+        $img_ex_lc = strtolower($img_ex);
+        $allowed_exs = array("jpg", "jpeg", "png");
+
+        if ($imagen == 'IMG-616f72f7244094.94613696.jpg') {
+            // code...
+            $imagenFinal = 'IMG-616f72f7244094.94613696.jpg';
+            if(isset($_POST['inputCheck']) && $_POST['inputCheck'] == 1) {
+                # inserting imge name into database
+                $insertar = $conexion -> prepare("INSERT INTO tbl_productos
+                                                              (p_producto, p_desc,
+                                                               p_categoria, p_stock,
+                                                               p_codigo, p_perecedero,
+                                                               p_perecedero_p, p_presentacion,
+                                                               p_imagen)
+                                                        VALUES (:producto, :descripcion,
+                                                                :categoria, :stockIni,
+                                                                :codigo, 1,
+                                                                :fecha, :presentacion,
+                                                                :imagenFinal)");
+            }
+            else {
+                $insertar = $conexion -> prepare("INSERT INTO tbl_productos
+                                                              (p_producto, p_desc,
+                                                               p_categoria, p_stock,
+                                                               p_codigo, p_perecedero,
+                                                               p_perecedero_p, p_presentacion,
+                                                               p_imagen)
+                                                        VALUES (:producto, :descripcion,
+                                                                :categoria, :stockIni,
+                                                                :codigo, 2,
+                                                                :fecha, :presentacion,
+                                                                :imagenFinal)");
+            }
+
+        }
+        else {
+            // code...
+            if (in_array($img_ex_lc, $allowed_exs)) {
+                $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
+                # crating upload path on root directory
+                $img_upload_path = "../imagenes/uploads/".$new_img_name;
+                # move uploaded image to 'uploads' folder
+                move_uploaded_file($tmp_name, $img_upload_path);
+                $imagenFinal = $new_img_name;
+
+                if(isset($_POST['inputCheck']) && $_POST['inputCheck'] == 1) {
+                    # inserting imge name into database
+                    $insertar = $conexion -> prepare("INSERT INTO tbl_productos
+                                                                  (p_producto, p_desc,
+                                                                   p_categoria, p_stock,
+                                                                   p_codigo, p_perecedero,
+                                                                   p_perecedero_p, p_presentacion,
+                                                                   p_imagen)
+                                                            VALUES (:producto, :descripcion,
+                                                                    :categoria, :stockIni,
+                                                                    :codigo, 1,
+                                                                    :fecha, :presentacion,
+                                                                    :imagenFinal)");
+                } else {
+                    $insertar = $conexion -> prepare("INSERT INTO tbl_productos
+                                                                  (p_producto, p_desc,
+                                                                   p_categoria, p_stock,
+                                                                   p_codigo, p_perecedero,
+                                                                   p_perecedero_p, p_presentacion,
+                                                                   p_imagen)
+                                                            VALUES (:producto, :descripcion,
+                                                                    :categoria, :stockIni,
+                                                                    :codigo, 2,
+                                                                    :fecha, :presentacion,
+                                                                    :imagenFinal)");
+                }
+            }
+
+        }
+
+        // Pasamos valores, con sentencias preparadas, para luego ejecutar.
+        $insertar -> bindParam(':producto', $producto, PDO::PARAM_STR);
+        $insertar -> bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+        $insertar -> bindParam(':categoria', $categoria, PDO::PARAM_INT);
+        $insertar -> bindParam(':stockIni', $stockIni, PDO::PARAM_INT);
+        $insertar -> bindParam(':codigo', $codigo, PDO::PARAM_STR);
+        $insertar -> bindParam(':fecha', $fecha, PDO::PARAM_STR);
+        $insertar -> bindParam(':presentacion', $presentacion, PDO::PARAM_INT);
+        $insertar -> bindParam(':imagenFinal', $imagenFinal, PDO::PARAM_STR);
+        if ($insertar -> execute()) {
+            # Datos de la empresa actualizados con exito.
+            #JSON = array('json' => 1, 'src'=> $new_img_name);
+            $JSON = 1;
+
+            echo json_encode($JSON);
+        } else {
+          # No se pudo actualizar los datos de la empresa
+          $JSON = 2;
+
+          echo json_encode($JSON);
+        }
+
     }
 
     // Se encarga de capturar el ID del permiso y devolver los datos del mismo.

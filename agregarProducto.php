@@ -98,7 +98,7 @@
                       </div>
                       <div class="form-group media-body icon-state">
                         <label class="switch float-start">
-                          <input type="checkbox" id="inputCheck" name="inputCheck" data-bs-original-title="" title="">
+                          <input type="checkbox" id="inputCheck" name="inputCheck" value="1">
                           <span class="switch-state bg-primary"></span>
                         </label>
                       </div>
