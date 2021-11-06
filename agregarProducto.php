@@ -71,46 +71,11 @@
                           ?>
                       </select>
                   </div>
-                  <div class="form-group mt-2">
-                      <div class="form-group">
-                          <label for="exampleFormControlFile1">Cargar imagen de la empresa: </label><br>
-                          <input type="file" class="form-control-file" id="inputImagen" name="inputImagen">
-                      </div>
                   </div>
-                </div>
                 <div class="col-4">
                   <div class="row">
-                    <div class="col-4">
+                    <div class="col-12">
                       <div class="form-group">
-                        <label for="" class="form-label">Stock inicial: </label>
-                        <input type="text" class="form-control" name="inputStockIni" id="inputStockIni">
-                      </div>
-                    </div>
-                    <div class="col-8">
-                      <div class="form-group">
-                        <label for="" class="form-label">Codigo: </label>
-                        <input type="text" class="form-control" name="inputCodigo" id="inputCodigo">
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="form-group mt-2">
-                        <label for="" class="form-label">Producto perecedero: </label>
-                      </div>
-                      <div class="form-group media-body icon-state">
-                        <label class="switch float-start">
-                          <input type="checkbox" id="inputCheck" name="inputCheck" value="1">
-                          <span class="switch-state bg-primary"></span>
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-8">
-                      <div class="form-group mt-2">
-                        <label for="" class="form-label">Fecha caducidad: </label>
-                        <input type="date" class="form-control" name="inputFecha" id="inputFecha" disabled>
-                      </div>
-                    </div>
-                    <div class="col-12 mt-3">
-                      <div class="form-group mt-2">
                         <label for="" class="form-label">Presentacion(*): </label>
                         <select class="select2 form-control" name="inputPresentacion" id="inputPresentacion" style="width: 100%;">
                             <option value=''>Seleccionar...</option>
@@ -125,12 +90,47 @@
                         </select>
                       </div>
                     </div>
+                    <div class="col-8">
+                      <div class="form-group mt-4">
+                        <label for="" class="form-label">Codigo: </label>
+                        <input type="text" class="form-control" name="inputCodigo" id="inputCodigo">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group mt-4">
+                        <label for="" class="form-label">Stock inicial: </label>
+                        <input type="text" class="form-control" name="inputStockIni" id="inputStockIni">
+                      </div>
+                    </div>
+                    <!-- <div class="col-4" hidden>
+                      <div class="form-group mt-2">
+                        <label for="" class="form-label">Producto perecedero: </label>
+                      </div>
+                      <div class="form-group media-body icon-state">
+                        <label class="switch float-start">
+                          <input type="checkbox" id="inputCheck" name="inputCheck" value="1">
+                          <span class="switch-state bg-primary"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-8" hidden>
+                      <div class="form-group mt-2">
+                        <label for="" class="form-label">Fecha caducidad: </label>
+                        <input type="date" class="form-control" name="inputFecha" id="inputFecha" disabled>
+                      </div>
+                    </div> -->
+                    <div class="form-group mt-4">
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Cargar imagen de la empresa: </label><br>
+                            <input type="file" class="form-control-file" id="inputImagen" name="inputImagen">
+                        </div>
+                    </div>
+
                   </div>
                 </div>
-                <div class="col-12 mt-3">
-                  <center>
-                    <a href="#" class="btn btn-primary" id="guardar" name="guardar"> <i class="fa fa-save"></i> Guardar</a>
-                  </center>
+                <div class="col-12 mt-5">
+                    <input type="hidden" name="action" value="insert">
+                    <a href="#" class="btn btn-primary pull-right btn-lg" id="guardar" name="guardar"> <i class="fa fa-save"></i> Guardar</a>
                 </div>
               </div>
             </form>

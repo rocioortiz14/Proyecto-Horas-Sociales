@@ -3,6 +3,7 @@
     include 'configuracion/sesion.php';
     // Requerimos el archivo de administracion multimedia de la empresa.
     include 'configuracion/multimedia.php';
+    $expt1 = 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">

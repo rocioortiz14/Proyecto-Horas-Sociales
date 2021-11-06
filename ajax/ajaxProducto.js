@@ -53,22 +53,22 @@ $(document).ready(function(){
         var categoria = $('#inputCategoria').val();
         var stock = $('#inputStockIni').val();
         var codigo = $('#inputCodigo').val();
-        var checkBox = document.getElementById("inputCheck");
-        var fechaP = $('#inputFecha').val();
+        // var checkBox = document.getElementById("inputCheck");
+        // var fechaP = $('#inputFecha').val();
         var presentacion = $('#inputPresentacion').val();
         var imagen = $('#inputImagen').val();
 
-        if (checkBox.checked == true && fechaP === '') {
-            Swal.fire({
-                icon: 'info',
-                title: 'Oops!',
-                text: 'Por favor ingrese fecha de caducidad!'
-            });
-        }
+        // if (checkBox.checked == true && fechaP === '') {
+            // Swal.fire({
+            //     icon: 'info',
+            //     title: 'Oops!',
+            //     text: 'Por favor ingrese fecha de caducidad!'
+            // });
+        // }
 
-        let dataProducto = new FormData(document.getElementById("formAProducto"));
-        let img = $("#inputImagen")[0].files;
-        let action = 'insert';
+        // let dataProducto = new FormData(document.getElementById("formAProducto"));
+        // let img = $("#inputImagen")[0].files;
+        // let action = 'insert';
 
         if (producto === '' || descripcion === '' || categoria === '' || presentacion === '') {
             Swal.fire({
@@ -77,26 +77,31 @@ $(document).ready(function(){
                 text: 'Por favor rellene todos los campos con (*)'
             });
         } else {
-            dataProducto.append('imagen', img);
-            dataProducto.append('action', action);
+            // dataProducto.append('imagen', img);
+            // dataProducto.append('action', action);
             //console.log(Object.fromEntries(dataProducto));
+            var form = $("#formAProducto");
+            var formdata = false;
+            if (window.FormData) {
+              formdata = new FormData(form[0]);
+            }
 
             $.ajax({
                 url: "procedimientos/Producto.php",
                 type: "POST",
-                data: dataProducto,
+                data:  formdata ? formdata : form.serialize(),
+                dataType: 'JSON',
                 contentType: false,
-                cache: false,
-                processData:false,
-                success: function(response) {
-                    data = JSON.parse(response);
-                    if (data === 0) {
+                processData: false,
+                success: function(data) {
+                    // data = JSON.parse(response);
+                    if (data.code==0) {
                         Swal.fire({
                             icon: 'info',
                             title: 'Oops!',
-                            text: 'Imagen demasiado pesada!'
+                            text: 'Formato de imagen incorrecto!'
                         });
-                    } else if (data === 1) {
+                    } else if (data.code == "1") {
                         /*
                         let path = "imagenes/uploads/"+data.src;
                         $(".logoImg").attr("src", path);
@@ -109,8 +114,10 @@ $(document).ready(function(){
                             icon: 'success',
                             title: 'Éxito!',
                             text: 'Producto insertado!'
+                        }).then(function(result) {
+                            location.reload();
                         });
-                    } else if (data === 2) {
+                    } else if (data.code == "2") {
                         Swal.fire({
                             icon: 'warning',
                             title: 'Alerta!',
