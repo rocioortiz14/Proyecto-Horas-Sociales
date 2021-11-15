@@ -12,7 +12,7 @@ $(document).ready(function(){
           success:function(response){
             $("#mostrarTablaProductos").html(response);
             $("#tblProductos").DataTable({
-              "iDisplayLength": 10,
+              "iDisplayLength": 5,
                 "language":{
                   "sProcessing":     "Procesando...",
                   "sLengthMenu":     "Mostrar _MENU_ registros",

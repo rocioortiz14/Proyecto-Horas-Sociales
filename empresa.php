@@ -140,6 +140,8 @@
       </div>
     </div>
     <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
+    <script src="assets/js/scrollbar/simplebar.js"></script>
+    <script src="assets/js/scrollbar/custom.js"></script>
     <script type="text/javascript">
         $(document).ready(function (e) {
             $(".btnGE").click(function(e) {

@@ -56,6 +56,8 @@
         include 'modales/editarUsuario.php';
 
         include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
+        <script src="assets/js/scrollbar/simplebar.js"></script>
+        <script src="assets/js/scrollbar/custom.js"></script>
     <script src="ajax/ajaxUsuario.js" charset="utf-8"></script>
   </body>
 </html>

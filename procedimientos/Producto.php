@@ -4,7 +4,16 @@
     require_once '../configuracion/sesion.php';
     // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
     require_once '../configuracion/conexion.php';
-    $cargar = $conexion -> prepare("SELECT * FROM tbl_productos");
+    $cargar = $conexion -> prepare("SELECT
+                                    p.p_id,
+                                    p.p_producto,
+                                    c.c_nombre,
+                                    p.p_desc,
+                                    p.p_presentacion,
+                                    p.p_imagen
+                                    FROM tbl_productos AS p
+                                    LEFT JOIN tbl_categorias AS c ON p.p_categoria = c.c_id
+                                    ORDER BY p.p_id DESC");
     $cargar -> execute();
     /*Almacenamos el resultado de fetchAll en una variable*/
     $arrayDatos = $cargar -> fetchAll();
@@ -23,16 +32,22 @@
           </thead>
           <tbody>
 <?php
+            $presentacionArray = array('','UNIDAD','DOCENA','CAJA','ONZA','LIBRA','KILOGRAMO','QUINTAL','SACO','LITRO','GALON');
+            $arrayP = $presentacionArray;
+            #for ($k=1; $k<sizeof($arrayP); $k++)
+            #{
+              #echo "<option value='$k'>". $array[$k] . "</option>";
+            #}
             /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
             foreach ($arrayDatos as $datos) {
                 echo '<tr>';
 
                   echo '<td class="text-center">' . $datos[0] . '</td>';
-                  echo '<td class="text-center"><img src="imagenes/uploads/' . $datos[9] . '" class="img img-fluid"></td>';
+                  echo '<td class="text-center"><img src="imagenes/uploads/' . $datos[5] . '" class="img img-fluid" style="width: 40%; height: 40%;"></td>';
                   echo '<td class="text-center">' . $datos[1] . '</td>';
-                  echo '<td class="text-center">' . $datos[3] . '</td>';
                   echo '<td class="text-center">' . $datos[2] . '</td>';
-                  echo '<td class="text-center">' . $datos[8] . '</td>';
+                  echo '<td class="text-center">' . $datos[3] . '</td>';
+                  echo '<td class="text-center">' . $datos[4] . '</td>';
                   echo '<td class="">
                             <center>
                                 <div class="btn-group">

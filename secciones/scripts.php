@@ -7,12 +7,9 @@
 <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
 
 <?php
-    $urlException1 = $expt1;
 
-    if ($urlException1 != 1) {
-      echo '<script src="assets/js/scrollbar/simplebar.js"></script>';
-      echo '<script src="assets/js/scrollbar/custom.js"></script>';
-    }
+
+
 ?>
 <!-- scrollbar js
 <script src="assets/js/scrollbar/simplebar.js"></script>
