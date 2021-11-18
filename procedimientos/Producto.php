@@ -53,8 +53,8 @@
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                                     <ul class="dropdown-menu">
-                                        <a href="#" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" data-bs-toggle="modal" data-bs-target="#editarCModal" title="Editar categoría"><i class="fa fa-edit text-success"></i> Editar</a>
-                                        <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar categoría"><i class="fa fa-trash text-danger"></i> Eliminar</a>
+                                        <a href="editarProducto.php" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" title="Editar producto"><i class="fa fa-edit text-success"></i> Editar</a>
+                                        <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar producto"><i class="fa fa-trash text-danger"></i> Eliminar</a>
                                     </ul>
                                 </div>
                             </center>
