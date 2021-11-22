@@ -3,6 +3,13 @@
     include 'configuracion/sesion.php';
     // Requerimos el archivo de administracion multimedia de la empresa.
     include 'configuracion/multimedia.php';
+    // Capturamos id del producto.
+    $id = $_GET['identificador'];
+    // Definimos sentencia SQL de consulta de detalles del producto.
+    $sql = 'SELECT p.p_producto, p.p_desc, c.c_nombre, p.p_presentacion, p.p_codigo, p.p_stock, p.p_imagen FROM tbl_productos AS p LEFT JOIN tbl_categorias AS c ON p.p_categoria = c.c_id WHERE p.p_id = :id';
+    $mostrar = $conexion -> prepare($sql);
+    $mostrar -> execute(['id' => $id]);
+    $resultado = $mostrar -> fetch();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +46,7 @@
           </div>
           <!-- Container-fluid starts-->
           <div class="container-fluid">
-            <form class="" action="" method="post" id="formAProducto">
+            <form class="" action="" method="post" id="formEProducto">
               <div class="row">
                 <div class="col-12">
                   <div class="alert alert-light">
@@ -47,19 +54,19 @@
                   </div>
                 </div>
                 <div class="col-3">
-                  <img src="imagenes/cargar.png" class="img img-fluid" alt="" title="Imagen sin cargar...">
+                  <img src="imagenes/uploads/<?php echo $resultado[6]; ?>" class="img img-fluid" alt="" title="Imagen sin cargar...">
                 </div>
                 <div class="col-5">
                   <div class="form-group">
                     <label for="" class="form-label">Producto(*): </label>
-                    <input type="text" class="form-control" name="inputProducto1" id="inputProducto1">
+                    <input type="text" class="form-control" name="inputProducto1" id="inputProducto1" value="<?php echo $resultado[0]; ?>">
                   </div>
                   <div class="form-group mt-2">
                     <label for="" class="form-label">Descripción(*): </label>
-                    <textarea name="inputDesc1" id="inputDesc1" class="form-control"></textarea>
+                    <textarea name="inputDesc1" id="inputDesc1" class="form-control"><?php echo $resultado[1]; ?></textarea>
                   </div>
                   <div class="form-group mt-2">
-                      <label for="clientes" class="form-label">Categoria(*): </label>
+                      <label for="clientes" class="form-label">Categoria actual(*): <b class="text-info"><?php echo $resultado[2]; ?></b></label>
                       <select class="form-control select2 text-dark" name="inputCategoria1" id="inputCategoria1" style="width: 100%;">
                           <option value="">Seleccionar...</option>
                           <?php
@@ -76,7 +83,19 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
-                        <label for="" class="form-label">Presentacion(*): </label>
+                        <?php
+                             $identificador1 = $resultado[3];
+                             $resultado1 = '';
+                             $estado1 = array('','UNIDAD','DOCENA','CAJA','ONZA','LIBRA','KILOGRAMO','QUINTAL','SACO','LITRO','GALON');
+                             $array1 = $estado1;
+                             for ($k1=1; $k1<sizeof($array1); $k1++)
+                             {
+                               if ($identificador1 == $k1) {
+                                 $resultado1 = $array1[$k1];
+                               }
+                             }
+                        ?>
+                        <label for="" class="form-label">Presentacion actual(*): <b class="text-info"><?php echo $resultado1;  ?></b></label>
                         <select class="select2 form-control" name="inputPresentacion1" id="inputPresentacion1" style="width: 100%;">
                             <option value=''>Seleccionar...</option>
                             <?php
@@ -93,32 +112,15 @@
                     <div class="col-8">
                       <div class="form-group mt-4">
                         <label for="" class="form-label">Codigo: </label>
-                        <input type="text" class="form-control" name="inputCodigo1" id="inputCodigo1">
+                        <input type="text" class="form-control" name="inputCodigo1" id="inputCodigo1" value="<?php echo $resultado[4]; ?>">
                       </div>
                     </div>
                     <div class="col-4">
                       <div class="form-group mt-4">
                         <label for="" class="form-label">Stock inicial: </label>
-                        <input type="text" class="form-control" name="inputStockIni1" id="inputStockIni1">
+                        <input type="text" class="form-control" name="inputStockIni1" id="inputStockIni1" value="<?php echo $resultado[5]; ?>">
                       </div>
                     </div>
-                    <!-- <div class="col-4" hidden>
-                      <div class="form-group mt-2">
-                        <label for="" class="form-label">Producto perecedero: </label>
-                      </div>
-                      <div class="form-group media-body icon-state">
-                        <label class="switch float-start">
-                          <input type="checkbox" id="inputCheck" name="inputCheck" value="1">
-                          <span class="switch-state bg-primary"></span>
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-8" hidden>
-                      <div class="form-group mt-2">
-                        <label for="" class="form-label">Fecha caducidad: </label>
-                        <input type="date" class="form-control" name="inputFecha" id="inputFecha" disabled>
-                      </div>
-                    </div> -->
                     <div class="form-group mt-4">
                         <div class="form-group">
                             <label for="exampleFormControlFile1">Cargar imagen de la empresa: </label><br>
@@ -129,8 +131,9 @@
                   </div>
                 </div>
                 <div class="col-12 mt-5">
+                    <input type="hidden" name="id" id="id" value="<?php echo $id; ?>">
                     <input type="hidden" name="action" value="update">
-                    <a href="#" class="btn btn-primary pull-right btn-lg" id="guardar1" name="guardar1"> <i class="fa fa-save"></i> Guardar</a>
+                    <a href="#" class="btn btn-primary pull-right btn-lg" id="guardar2" name="guardar2"> <i class="fa fa-save"></i> Guardar</a>
                 </div>
               </div>
             </form>
@@ -141,6 +144,8 @@
       </div>
     </div>
     <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
+    <script src="assets/js/scrollbar/simplebar.js"></script>
+    <script src="assets/js/scrollbar/custom.js"></script>
     <script src="ajax/ajaxProducto.js" charset="utf-8"></script>
   </body>
 </html>

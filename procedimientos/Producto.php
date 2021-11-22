@@ -32,12 +32,7 @@
           </thead>
           <tbody>
 <?php
-            $presentacionArray = array('','UNIDAD','DOCENA','CAJA','ONZA','LIBRA','KILOGRAMO','QUINTAL','SACO','LITRO','GALON');
-            $arrayP = $presentacionArray;
-            #for ($k=1; $k<sizeof($arrayP); $k++)
-            #{
-              #echo "<option value='$k'>". $array[$k] . "</option>";
-            #}
+
             /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
             foreach ($arrayDatos as $datos) {
                 echo '<tr>';
@@ -47,13 +42,23 @@
                   echo '<td class="text-center">' . $datos[1] . '</td>';
                   echo '<td class="text-center">' . $datos[2] . '</td>';
                   echo '<td class="text-center">' . $datos[3] . '</td>';
-                  echo '<td class="text-center">' . $datos[4] . '</td>';
+                  $identificador1 = $datos[4];
+                  $resultado1 = '';
+                  $estado1 = array('','UNIDAD','DOCENA','CAJA','ONZA','LIBRA','KILOGRAMO','QUINTAL','SACO','LITRO','GALON');
+                  $array1 = $estado1;
+                  for ($k1=1; $k1<sizeof($array1); $k1++)
+                  {
+                    if ($identificador1 == $k1) {
+                      $resultado1 = $array1[$k1];
+                    }
+                  }
+                  echo '<td class="text-center">' . $resultado1 . '</td>';
                   echo '<td class="">
                             <center>
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                                     <ul class="dropdown-menu">
-                                        <a href="editarProducto.php" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" title="Editar producto"><i class="fa fa-edit text-success"></i> Editar</a>
+                                        <a href="editarProducto.php?identificador='.$datos[0].'" class="dropdown-item text-dark btnEdit" id="'.$datos[0].'" title="Editar producto"><i class="fa fa-edit text-success"></i> Editar</a>
                                         <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Eliminar producto"><i class="fa fa-trash text-danger"></i> Eliminar</a>
                                     </ul>
                                 </div>
@@ -81,14 +86,6 @@
             // code...
             $imagen = 'IMG-616f72f7244094.94613696.jpg';
         }
-
-        // if (isset($_POST['inputFecha'])) {
-        //     // code...
-        //     $fecha = '';
-        // } else {
-        //     // code...
-        //     $fecha = $_POST['inputFecha'];
-        // }
 
         $producto = mb_strtoupper($_POST['inputProducto'], 'UTF-8');
         $descripcion = mb_strtoupper($_POST['inputDesc'], 'UTF-8');
@@ -170,45 +167,113 @@
         echo json_encode($JSON);
     }
 
-    // Se encarga de capturar el ID del permiso y devolver los datos del mismo.
-    if (isset($_POST['edit_id'])) {
-        // Capturamos el ID del permiso.
-        $id = $_POST['edit_id'];
-
-        $buscar = $conexion -> prepare("SELECT * FROM tbl_productos WHERE c_id = :id");
-        $buscar -> execute(['id' => $id]);
-        $categoriaData = $buscar -> fetch();
-
-        echo json_encode($categoriaData);
-    }
-
     if (isset($_POST['action']) && $_POST['action'] == "update") {
 
         // Variable que almacena respuesta para el AJAX.
-        $JSON = 0;
+        $JSON = array();
+        $imagen = 0;
+        $imagenFinal = '';
+        $fecha = '';
+        $insertar = '';
 
-        // Capturamos los datos del formulario y los almacenamos en las variables.
-        $idC = $_POST['id'];
-        $categoriaC =  mb_strtoupper($_POST['inputCategoria1'], 'UTF-8');
-        $descC = mb_strtoupper($_POST['inputDesc1'], 'UTF-8');
-
-        if ($categoriaC == '' || $categoriaC == null || $descC == '' || $descC == null) {
-            $JSON = 0; // Para el caso de datos vacios o nulos.
-        } else {
-            // Pasamos los parámetros a la función actualizará el permiso.
-            $actualizar = $conexion -> prepare('UPDATE tbl_productos SET c_nombre = :categoriaC, c_desc = :descC, c_actualizar = NOW() WHERE c_id = :idC');
-            $actualizar -> bindValue(':categoriaC', $categoriaC, PDO::PARAM_STR);
-            $actualizar -> bindValue(':descC', $descC, PDO::PARAM_STR);
-            $actualizar -> bindValue(':idC', $idC, PDO::PARAM_INT);
-            // Ejecutamos y verificamos que el permiso ha sido actualizado.
-            if($actualizar -> execute()) {
-                $JSON = 1;
-            } else {
-              $JSON = 2;
-            }
+        if ($_FILES['inputImagen1']['size'] == 0 || $_FILES['inputImagen1']['error'] == 0 || $_FILES['inputImagen1']['name'] == "") {
+            // code...
+            $imagenV = 0;
+            #print $imagen;
+            #print 'no entra la imagen y var de seteo';
         }
 
-        // Finalmente imprimimos respuesta que interpretará AJAX posteriormente.
+        $producto = mb_strtoupper($_POST['inputProducto1'], 'UTF-8');
+        $descripcion = mb_strtoupper($_POST['inputDesc1'], 'UTF-8');
+        $categoria = mb_strtoupper($_POST['inputCategoria1'], 'UTF-8');
+        $stockIni = $_POST['inputStockIni1'];
+        $codigo = mb_strtoupper($_POST['inputCodigo1'], 'UTF-8');
+        $id = $_POST['id'];
+        $presentacion = $_POST['inputPresentacion1'];
+
+        # getting image data and store them in var
+        $img_name = $_FILES['inputImagen1']['name'];
+        $img_size = $_FILES['inputImagen1']['size'];
+        $tmp_name = $_FILES['inputImagen1']['tmp_name'];
+        $error    = $_FILES['inputImagen1']['error'];
+
+        # get image extension store it in var
+        $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+        $img_ex_lc = strtolower($img_ex);
+        $allowed_exs = array("jpg", "jpeg", "png");
+
+        $pass = 0;
+        if ($imagenV === 0) {
+            // En el caso que no se decida actualizar la imagen del producto.
+            $actualizar = $conexion -> prepare("UPDATE tbl_productos
+                                                SET p_producto = :producto,
+                                                    p_desc = :descripcion,
+                                                    p_categoria = :categoria,
+                                                    p_stock = :stockIni,
+                                                    p_codigo = :codigo,
+                                                    p_presentacion = :presentacion
+                                                    WHERE p_id = :id");
+
+            $pass = 1;
+        }
+        else {
+            if (in_array($img_ex_lc, $allowed_exs)) {
+                $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
+                # crating upload path on root directory
+                $img_upload_path = "../imagenes/uploads/".$new_img_name;
+                # move uploaded image to 'uploads' folder
+                move_uploaded_file($tmp_name, $img_upload_path);
+                $imagenFinal = $new_img_name;
+
+                $actualizar = $conexion -> prepare("UPDATE tbl_productos
+                                                    SET p_producto = :producto,
+                                                        p_desc = :descripcion,
+                                                        p_categoria = :categoria,
+                                                        p_stock = :stockIni,
+                                                        p_codigo = :codigo,
+                                                        p_presentacion = :presentacion,
+                                                        p_imagen = :imagenFinal
+                                                        WHERE p_id = :id");
+            }
+
+            $pass = 2;
+
+        }
+
+        if ($pass == 1) { #Para el caso que no se desea actualizar la imagen.
+        // Pasamos valores, con sentencias preparadas, para luego ejecutar.
+          $actualizar -> bindValue(':producto', $producto, PDO::PARAM_STR);
+          $actualizar -> bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+          $actualizar -> bindValue(':categoria', $categoria, PDO::PARAM_INT);
+          $actualizar -> bindValue(':stockIni', $stockIni, PDO::PARAM_STR);
+          $actualizar -> bindValue(':codigo', $codigo, PDO::PARAM_STR);
+          $actualizar -> bindValue(':presentacion', $presentacion, PDO::PARAM_INT);
+          $actualizar -> bindValue(':id', $id, PDO::PARAM_INT);
+          if ($actualizar -> execute()) {
+          //echo "paso 1";
+              $JSON["code"] = 1;
+          } else {
+              $JSON["code"] = 2;
+          }
+          echo "paso 1";
+        } else if ($pass == 2) {
+            $actualizar -> bindValue(':producto', $producto, PDO::PARAM_STR);
+            $actualizar -> bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+            $actualizar -> bindValue(':categoria', $categoria, PDO::PARAM_INT);
+            $actualizar -> bindValue(':stockIni', $stockIni, PDO::PARAM_STR);
+            $actualizar -> bindValue(':codigo', $codigo, PDO::PARAM_STR);
+            $actualizar -> bindValue(':presentacion', $presentacion, PDO::PARAM_INT);
+            $actualizar -> bindValue(':imagenFinal', $imagenFinal, PDO::PARAM_STR);
+            $actualizar -> bindValue(':id', $id, PDO::PARAM_INT);
+            if ($actualizar -> execute()) {
+                $JSON["code"] = 1;
+            } else {
+                $JSON["code"] = 2;
+            }
+            echo "paso 2";
+        } else {
+            $JSON["code"] = 0;
+        }
         echo json_encode($JSON);
     }
 
@@ -222,7 +287,7 @@
         $id = $_POST['del_id'];
 
         // Pasamos los parámetros a la función que preparara la sentencia SQL de eliminación.
-        $eliminar = $conexion -> prepare("DELETE FROM tbl_productos WHERE c_id = :id");
+        $eliminar = $conexion -> prepare("DELETE FROM tbl_productos WHERE p_id = :id");
 
         if ($eliminar -> execute(['id' => $id])) {
           $JSON = 1;

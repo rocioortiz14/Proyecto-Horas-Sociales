@@ -21,7 +21,7 @@
                   </div>
                   <div class="col-9 mt-4">
                       <a id="facturar" class="btn btn-danger btn-sm float-end"> <strong>(F2)</strong> FACTURAR</a>
-                      <a id="" class="btn btn-success btn-sm float-end me-1"> <strong>(F1)</strong> REGISTRAR PROVEEDOR</a>
+                      <a id="nuevoProveedor" class="btn btn-success btn-sm float-end me-1" data-bs-toggle="modal" data-bs-target="#agregarPrvModal"> <strong>(F3)</strong> REGISTRAR PROVEEDOR</a>
                   </div>
                   <div class="col-4 mt-3">
                       <div class="form-group">
@@ -124,6 +124,7 @@
               </div>
           </div>
       </div>
+      <?php include 'modales/agregarProveedores.php'; ?>
       <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
       <script src="ajax/ajaxCompra.js"></script>
   </body>

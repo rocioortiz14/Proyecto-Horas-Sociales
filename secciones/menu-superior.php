@@ -13,7 +13,7 @@
             </div>
           </form>
           <div class="header-logo-wrapper col-auto p-0">
-            <div class="logo-wrapper"><a href="index.html"><img class="img-fluid" src="assets/images/logo/logo.png" alt=""></a></div>
+            <div class="logo-wrapper"><a href="inicio.php"><img class="img-fluid" src="assets/images/logo/logo.png" alt=""></a></div>
             <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
           </div>
           <div class="left-header col horizontal-wrapper ps-0">
@@ -53,7 +53,7 @@
                 </ul>
               </li>
               <li class="profile-nav onhover-dropdown p-0 me-0">
-                <div class="media profile-media"><img class="b-r-10" src="assets/images/dashboard/profile.jpg" alt="">
+                <div class="media profile-media"><img class="b-r-10" src="imagenes/users.png" alt="">
                   <div class="media-body"><span><?php echo $_SESSION["usuario"]; ?></span>
                     <p class="mb-0 font-roboto"><?php echo $data[1]; ?> <i class="middle fa fa-angle-down"></i></p>
                   </div>

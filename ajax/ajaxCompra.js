@@ -1,6 +1,75 @@
 var entro = false;
 
-$(document).ready(function(){
+$(document).ready(function() {
+
+  $(document).keydown(function(e) {
+    if (e.which == 114) { //F1 AGREGAR PROVEEDOR
+      $('#agregarPrvModal').modal('toggle');
+      e.stopPropagation();
+    }
+  });
+
+  $('#cerrar1').click(function(e) {
+    e.preventDefault();
+    $("#formAProveedor")[0].reset();
+  });
+
+  $('#cerrar2').click(function(e) {
+    e.preventDefault();
+    $("#formAProveedor")[0].reset();
+  });
+
+  // Mediante Ajax, al dar clic en en el boton guardar se almacenan todos los datos (Serialize).
+  $("#guardar").click(function(e){
+      if ($("#formAProveedor")[0].checkValidity()) {
+        e.preventDefault();
+        $.ajax({
+          url: "procedimientos/Proveedores.php",
+          type: "POST",
+          data: $("#formAProveedor").serialize()+"&action=insert",
+          success:function(response){
+              data = JSON.parse(response);
+              if (data === 0) {
+                  Swal.fire({
+                      icon: 'info',
+                      title: 'Oops!',
+                      text: 'Rellene todos los campos!'
+                  });
+              } else if (data === 1) {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Éxito!',
+                      text: 'Proveedor guardado!'
+                  });
+                  $("#agregarPrvModal").modal('hide');
+                  $("#formAProveedor")[0].reset();
+                  location.reload();
+              }  else if (data === 2) {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops!',
+                      text: 'Cliente no guardado!'
+                  });
+                  $("#agregarPrvModal").modal('hide');
+                  $("#formAProveedor")[0].reset();
+              } else {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: 'Ha sucedido un error!'
+                  });
+                  $("#agregarPrvModal").modal('hide');
+                  $("#formAProveedor")[0].reset();
+              }
+
+          },
+          error: function(e){
+            console.log(e);
+          }
+        });
+      }
+  }); // Aquí termina la función encargada de insertar los proveedores.
+
   $(document).keydown(function(e) {
     if (e.which == 113) { //F2 Guardar
       $("#facturar").click();
@@ -213,4 +282,5 @@ function guardar_compra(){
         text: 'Complete todos los datos para continuar!'
     });
   }
+
 }
