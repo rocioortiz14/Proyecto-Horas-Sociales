@@ -123,7 +123,7 @@
                     </div>
                     <div class="form-group mt-4">
                         <div class="form-group">
-                            <label for="exampleFormControlFile1">Cargar imagen de la empresa: </label><br>
+                            <label for="exampleFormControlFile1">Cargar imagen de la empresa(*): </label><br>
                             <input type="file" class="form-control-file" id="inputImagen1" name="inputImagen1">
                         </div>
                     </div>

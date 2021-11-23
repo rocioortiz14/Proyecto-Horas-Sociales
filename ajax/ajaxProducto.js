@@ -131,7 +131,7 @@ $(document).ready(function(){
         var imagen = $('#inputImagen1').val();
         //console.log(imagen);
 
-        if (producto === '' || descripcion === '' || categoria === '' || presentacion === '') {
+        if (producto === '' || descripcion === '' || categoria === '' || presentacion === '' || imagen === '') {
             Swal.fire({
                 icon: 'info',
                 title: 'Oops!',

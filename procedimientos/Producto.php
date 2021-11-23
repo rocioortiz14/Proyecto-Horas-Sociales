@@ -171,17 +171,11 @@
 
         // Variable que almacena respuesta para el AJAX.
         $JSON = array();
-        $imagen = 0;
+        $imagenV = '';
+        $pass = '';
         $imagenFinal = '';
         $fecha = '';
         $insertar = '';
-
-        if ($_FILES['inputImagen1']['size'] == 0 || $_FILES['inputImagen1']['error'] == 0 || $_FILES['inputImagen1']['name'] == "") {
-            // code...
-            $imagenV = 0;
-            #print $imagen;
-            #print 'no entra la imagen y var de seteo';
-        }
 
         $producto = mb_strtoupper($_POST['inputProducto1'], 'UTF-8');
         $descripcion = mb_strtoupper($_POST['inputDesc1'], 'UTF-8');
@@ -202,21 +196,6 @@
         $img_ex_lc = strtolower($img_ex);
         $allowed_exs = array("jpg", "jpeg", "png");
 
-        $pass = 0;
-        if ($imagenV === 0) {
-            // En el caso que no se decida actualizar la imagen del producto.
-            $actualizar = $conexion -> prepare("UPDATE tbl_productos
-                                                SET p_producto = :producto,
-                                                    p_desc = :descripcion,
-                                                    p_categoria = :categoria,
-                                                    p_stock = :stockIni,
-                                                    p_codigo = :codigo,
-                                                    p_presentacion = :presentacion
-                                                    WHERE p_id = :id");
-
-            $pass = 1;
-        }
-        else {
             if (in_array($img_ex_lc, $allowed_exs)) {
                 $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
                 # crating upload path on root directory
@@ -234,46 +213,24 @@
                                                         p_presentacion = :presentacion,
                                                         p_imagen = :imagenFinal
                                                         WHERE p_id = :id");
-            }
 
-            $pass = 2;
-
-        }
-
-        if ($pass == 1) { #Para el caso que no se desea actualizar la imagen.
-        // Pasamos valores, con sentencias preparadas, para luego ejecutar.
-          $actualizar -> bindValue(':producto', $producto, PDO::PARAM_STR);
-          $actualizar -> bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
-          $actualizar -> bindValue(':categoria', $categoria, PDO::PARAM_INT);
-          $actualizar -> bindValue(':stockIni', $stockIni, PDO::PARAM_STR);
-          $actualizar -> bindValue(':codigo', $codigo, PDO::PARAM_STR);
-          $actualizar -> bindValue(':presentacion', $presentacion, PDO::PARAM_INT);
-          $actualizar -> bindValue(':id', $id, PDO::PARAM_INT);
-          if ($actualizar -> execute()) {
-          //echo "paso 1";
-              $JSON["code"] = 1;
-          } else {
-              $JSON["code"] = 2;
-          }
-          echo "paso 1";
-        } else if ($pass == 2) {
-            $actualizar -> bindValue(':producto', $producto, PDO::PARAM_STR);
-            $actualizar -> bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
-            $actualizar -> bindValue(':categoria', $categoria, PDO::PARAM_INT);
-            $actualizar -> bindValue(':stockIni', $stockIni, PDO::PARAM_STR);
-            $actualizar -> bindValue(':codigo', $codigo, PDO::PARAM_STR);
-            $actualizar -> bindValue(':presentacion', $presentacion, PDO::PARAM_INT);
-            $actualizar -> bindValue(':imagenFinal', $imagenFinal, PDO::PARAM_STR);
-            $actualizar -> bindValue(':id', $id, PDO::PARAM_INT);
-            if ($actualizar -> execute()) {
-                $JSON["code"] = 1;
+                $actualizar -> bindValue(':producto', $producto, PDO::PARAM_STR);
+                $actualizar -> bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+                $actualizar -> bindValue(':categoria', $categoria, PDO::PARAM_INT);
+                $actualizar -> bindValue(':stockIni', $stockIni, PDO::PARAM_STR);
+                $actualizar -> bindValue(':codigo', $codigo, PDO::PARAM_STR);
+                $actualizar -> bindValue(':presentacion', $presentacion, PDO::PARAM_INT);
+                $actualizar -> bindValue(':imagenFinal', $imagenFinal, PDO::PARAM_STR);
+                $actualizar -> bindValue(':id', $id, PDO::PARAM_INT);
+                if ($actualizar -> execute()) {
+                    $JSON["code"] = 1;
+                } else {
+                    $JSON["code"] = 2;
+                }
+                #echo "paso 2";
             } else {
-                $JSON["code"] = 2;
-            }
-            echo "paso 2";
-        } else {
             $JSON["code"] = 0;
-        }
+            }
         echo json_encode($JSON);
     }
 
