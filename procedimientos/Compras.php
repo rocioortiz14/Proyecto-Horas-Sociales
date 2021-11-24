@@ -6,6 +6,66 @@ require_once '../configuracion/sesion.php';
 // Requerimos el archivo de conexion a la base de datos e iniciamos la sesión.
 require_once '../configuracion/conexion.php';
 
+$cargar = $conexion -> prepare("SELECT
+                                c.c_id,
+                                c.c_fecha,
+                                p.prv_nombre,
+                                c.c_comprobante,
+                                c.c_serie,
+                                c.c_numero,
+                                c.c_ttl
+                                FROM tbl_compra AS c
+                                LEFT JOIN tbl_proveedores AS p ON c.c_proveedor = p.prv_id
+                                ORDER BY c.c_id ASC");
+
+$cargar -> execute();
+/*Almacenamos el resultado de fetchAll en una variable*/
+$arrayDatos = $cargar -> fetchAll();
+//print_r($arrayDatos);
+
+if (isset($_POST['action']) && $_POST['action'] == "view") {
+    echo '
+    <table class="table table-hover table-sm" id="tblCompras">
+      <thead>
+        <th class="bg-primary text-white text-center" style="width: 5%;">ID</th>
+        <th class="bg-primary text-white text-center" style="width: 10%;">Fecha</th>
+        <th class="bg-primary text-white text-center" style="width: 30%;">Proveedor</th>
+        <th class="bg-primary text-white text-center" style="width: 10%;">Comprobante</th>
+        <th class="bg-primary text-white text-center" style="width: 13%;">Serie</th>
+        <th class="bg-primary text-white text-center" style="width: 12%;">N° compra</th>
+        <th class="bg-primary text-white text-center" style="width: 10%;">Total compra</th>
+        <th class="bg-primary text-white text-center" style="width: 10%;"></th>
+      </thead>
+      <tbody>';
+          /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
+          foreach ($arrayDatos as $datos) {
+              echo '<tr>';
+
+                echo '<td class="text-center">' . $datos[0] . '</td>';
+                echo '<td class="text-center">' . $datos[1] . '</td>';
+                echo '<td class="text-justify">' . $datos[2] . '</td>';
+                echo '<td class="text-center">' . $datos[3] . '</td>';
+                echo '<td class="text-center">' . $datos[4] . '</td>';
+                echo '<td class="text-center">' . $datos[5] . '</td>';
+                echo '<td class="text-center">$' . $datos[6] . '</td>';
+                echo '<td class="">
+                          <center>
+                              <div class="btn-group">
+                                  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
+                                  <ul class="dropdown-menu">
+                                      <a href="detalleCompras.php?identificador='.$datos[0].'" class="dropdown-item text-dark btnDetail" id="'.$datos[0].'" title="Detalle compra"><i class="fa fa-edit text-success"></i> Detalle</a>
+                                      <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Anular compra"><i class="fa fa-trash text-danger"></i> Anular</a>
+                                  </ul>
+                              </div>
+                          </center>
+                      </td>';
+              echo ' </tr>';
+          }
+      echo '
+        </tbody>
+      </table>';
+}
+
 if (isset($_POST['action']) && $_POST['action'] == "insert") {
   $JSON = array();
   $insertar = 0;
