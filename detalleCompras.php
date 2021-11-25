@@ -46,7 +46,19 @@
                   <div class="card">
                       <?php
                           $idCompra = $_GET['identificador'];
-                          $query2 = "SELECT * FROM tbl_compra WHERE c_id = :idCompra";
+                          $query2 = "SELECT
+                                    c.c_id,
+                                    c.c_fecha,
+                                    p.prv_nombre,
+                                    p.prv_nit,
+                                    p.prv_telefono,
+                                    p.prv_correo,
+                                    c.c_comprobante,
+                                    c.c_serie,
+                                    c.c_numero
+                                    FROM tbl_compra AS c
+                                    LEFT JOIN tbl_proveedores AS p ON c.c_proveedor = p.prv_id
+                                    WHERE c.c_id = :idCompra";
                           $cabezera = $conexion -> prepare($query2);
                           $cabezera -> execute(['idCompra' => $idCompra]);
                           $cabezeraR = $cabezera -> fetch();
@@ -64,16 +76,29 @@
                           </div>
                           <div class="col-12"><hr></div>
                           <div class="col-3 mt-2">
-                            <h5 class="text-center">COMPROBANTE: <?php echo $cabezeraR[3]; ?>.</h5>
+                            <h5 class="text-center">COMPROBANTE: <?php echo $cabezeraR[6]; ?>.</h5>
                           </div>
                           <div class="col-3 mt-2">
                             <h5 class="text-center">FECHA: <?php echo $cabezeraR[1]; ?>.</h5>
                           </div>
                           <div class="col-3 mt-2">
-                            <h5 class="text-center">SERIE: <?php echo $cabezeraR[4]; ?>.</h5>
+                            <h5 class="text-center">SERIE: <?php echo $cabezeraR[7]; ?>.</h5>
                           </div>
                           <div class="col-3 mt-2">
-                            <h5 class="text-center">NÚMERO: <?php echo $cabezeraR[5]; ?>.</h5>
+                            <h5 class="text-center">NÚMERO: <?php echo $cabezeraR[8]; ?>.</h5>
+                          </div>
+                          <div class="col-12"><hr></div>
+                          <div class="col-7">
+                            <h5 class="text-justify">&nbsp;&nbsp;&nbsp;&nbsp; PROVEEDOR: <?php echo $cabezeraR[2]; ?>.</h5>
+                          </div>
+                          <div class="col-5">
+                            <h5 class="text-justify"> NIT: <?php echo $cabezeraR[3]; ?>.</h5>
+                          </div>
+                          <div class="col-7">
+                            <h5 class="text-justify">&nbsp;&nbsp;&nbsp;&nbsp; TELÉFONO: <?php echo $cabezeraR[4]; ?>.</h5>
+                          </div>
+                          <div class="col-5">
+                            <h5 class="text-justify">CORREO: <?php echo $cabezeraR[5]; ?>.</h5>
                           </div>
                           <div class="col-12"><hr></div>
                           <center>
@@ -83,6 +108,7 @@
                                           <th class="text-center">N°</th>
                                           <th class="text-center">CÓDIGO</th>
                                           <th class="text-center">PRODUCTO</th>
+                                          <th class="text-center">CANTIDAD</th>
                                           <th class="text-center">VALOR UNITARIO (USD)</th>
                                           <th class="text-center">VALOR TOTAL (USD)</th>
                                       </thead>
@@ -92,6 +118,10 @@
                                                         p.p_codigo,
                                                         p.p_producto,
                                                         p.p_pc,
+                                                        cd.cd_qty,
+                                                        c.c_stot,
+                                                        c.c_iva,
+                                                        cd.cd_stot,
                                                         c.c_ttl
                                                         FROM tbl_compra_detalle AS cd
                                                         LEFT JOIN tbl_compra AS c ON cd.cd_compra = c.c_id
@@ -101,21 +131,33 @@
                                               $detalle -> execute(['idCompra' => $idCompra]);
                                               $detalleR = $detalle -> fetchAll();
                                               $contador = 1;
+                                              #$totalF = 0;
                                               foreach ($detalleR as $datos) {
                                                   echo '<tr>';
 
                                                     echo '<td class="text-center">' . $contador . '</td>';
                                                     echo '<td class="text-center">' . $datos[0] . '</td>';
                                                     echo '<td class="text-justify">' . $datos[1] . '</td>';
-                                                    echo '<td class="text-center">$' . $datos[2] . '</td>';
+                                                    echo '<td class="text-center">' . $datos[2] . '</td>';
                                                     echo '<td class="text-center">$' . $datos[3] . '</td>';
+                                                    echo '<td class="text-center">$' . $datos[6] . '</td>';
                                                 echo '</tr>';
+                                                #$totalF = $totalF + $datos[6];
                                                 $contador = $contador + 1;
                                               }
                                           ?>
-
+                                          <tr>
+                                            <th class="text-end" colspan="5">TOTAL PARCIAL:</th>
+                                            <th class="text-center">$<?php echo $datos[4]; ?></th>
+                                          </tr>
+                                          <tr>
+                                            <th class="text-end" colspan="5">IVA(13%):</th>
+                                            <th class="text-center">$<?php echo $datos[5]; ?></th>
+                                          </tr>
                                       </tbody>
                                       <tfoot>
+                                      <th class="text-end" colspan="5">TOTAL FACTURA:</th>
+                                        <th class="text-center">$<?php echo $datos[7]; ?></th>
                                       </tfoot>
                                   </table><br><br>
                               </div>
