@@ -41,9 +41,9 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
-                  <a href="#" class="btn btn-primary btn-md"> <i class="fa fa-print"></i> Imprimir comprobante</a>
+                  <a href="#" class="btn btn-primary btn-md imprimir"> <i class="fa fa-print"></i> Imprimir comprobante</a>
                   <hr>
-                  <div class="card">
+                  <div class="card" id="invoiceF">
                       <?php
                           $idCompra = $_GET['identificador'];
                           $query2 = "SELECT
@@ -76,29 +76,31 @@
                           </div>
                           <div class="col-12"><hr></div>
                           <div class="col-3 mt-2">
-                            <h5 class="text-center">COMPROBANTE: <?php echo $cabezeraR[6]; ?>.</h5>
+                            <h6 class="text-center">COMPROBANTE: <?php echo $cabezeraR[6]; ?>.</h6>
                           </div>
                           <div class="col-3 mt-2">
-                            <h5 class="text-center">FECHA: <?php echo $cabezeraR[1]; ?>.</h5>
+                            <h6 class="text-center">FECHA: <?php echo $cabezeraR[1]; ?>.</h6>
                           </div>
                           <div class="col-3 mt-2">
-                            <h5 class="text-center">SERIE: <?php echo $cabezeraR[7]; ?>.</h5>
+                            <h6 class="text-center">SERIE: <?php echo $cabezeraR[7]; ?>.</h6>
                           </div>
                           <div class="col-3 mt-2">
-                            <h5 class="text-center">NÚMERO: <?php echo $cabezeraR[8]; ?>.</h5>
+                            <h6 class="text-center">NÚMERO: <?php echo $cabezeraR[8]; ?>.</h6>
                           </div>
                           <div class="col-12"><hr></div>
+                          <div class="col-12">
+                            <h6 class="text-justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              PROVEEDOR: <?php echo $cabezeraR[2]; ?></h6>
+                          </div><!--
+                          <div class="col-5">
+                            <h6 class="text-justify"> NIT: <?php #echo $cabezeraR[3]; ?>.</h6>
+                          </div> -->
                           <div class="col-7">
-                            <h5 class="text-justify">&nbsp;&nbsp;&nbsp;&nbsp; PROVEEDOR: <?php echo $cabezeraR[2]; ?>.</h5>
+                            <h6 class="text-justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              TELÉFONO: <?php echo $cabezeraR[4]; ?>.</h6>
                           </div>
                           <div class="col-5">
-                            <h5 class="text-justify"> NIT: <?php echo $cabezeraR[3]; ?>.</h5>
-                          </div>
-                          <div class="col-7">
-                            <h5 class="text-justify">&nbsp;&nbsp;&nbsp;&nbsp; TELÉFONO: <?php echo $cabezeraR[4]; ?>.</h5>
-                          </div>
-                          <div class="col-5">
-                            <h5 class="text-justify">CORREO: <?php echo $cabezeraR[5]; ?>.</h5>
+                            <h6 class="text-justify">CORREO: <?php echo $cabezeraR[5]; ?></h6>
                           </div>
                           <div class="col-12"><hr></div>
                           <center>
@@ -176,9 +178,22 @@
     <script src="assets/js/scrollbar/simplebar.js"></script>
     <script src="assets/js/scrollbar/custom.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+    $(document).ready(function(){
+        // Imprimimos invoice de ìndice de libro de especies municipales.
+        $(".imprimir").click(function() {
+
+            var nombreDiv = 'invoiceF';
+            var contenido = document.getElementById(nombreDiv).innerHTML;
+            var contenidoOriginal= document.body.innerHTML;
+            document.body.innerHTML = contenido;
+            if (window.print()) {
+                document.body.innerHTML = contenidoOriginal;
+            } else {
+                location.reload();
+            }
 
         });
+    });
     </script>
   </body>
 </html>
