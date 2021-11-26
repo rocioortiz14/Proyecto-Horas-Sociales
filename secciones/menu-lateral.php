@@ -29,7 +29,7 @@
                     <ul class="sidebar-submenu">
                       <li><a href="categorias.php">Categorias</a></li>
                       <li><a href="productos.php">Productos</a></li>
-                      <li><a href="chart-widget.html">Inventario</a></li>
+                      <li><a href="inventarios.php">Inventario</a></li>
                     </ul>
                   </li>
 
