@@ -11,6 +11,9 @@
     <?php include 'secciones/cabezera.php'; // Incluimos los estilos a la plantilla ?>
   </head>
   <body class="bg-light">
+
+    <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2) { ?>
+
     <!-- tap on top starts-->
     <div class="tap-top"><i data-feather="chevrons-up"></i></div>
       <div class="content bg-light">
@@ -125,6 +128,9 @@
           </div>
       </div>
       <?php include 'modales/agregarProveedores.php'; ?>
+
+      <?php } ?>
+
       <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
       <script src="ajax/ajaxCompra.js"></script>
   </body>

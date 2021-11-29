@@ -28,6 +28,9 @@
         <?php include 'secciones/menu-lateral.php'; // Incluimos el pie de pagina de la plantilla. ?>
         <!-- DETALLE DEL MODULO EN UTILIZACION -->
         <div class="page-body">
+
+          <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2) { ?>
+
           <div class="container-fluid">
             <div class="page-title">
               <div class="row">
@@ -139,6 +142,9 @@
             </form>
           </div>
           <!-- Container-fluid Ends-->
+
+          <?php } ?>
+
         </div>
         <?php include 'secciones/pie-pagina.php'; // Incluimos el pie de pagina de la plantilla. ?>
       </div>

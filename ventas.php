@@ -21,6 +21,10 @@
         <?php include 'secciones/menu-lateral.php'; // Incluimos el pie de pagina de la plantilla. ?>
         <!-- DETALLE DEL MODULO EN UTILIZACION -->
         <div class="page-body">
+
+          <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2 || $_SESSION["permiso"] == 3) { ?>
+
+
           <div class="container-fluid">
             <div class="page-title">
               <div class="row">
@@ -40,12 +44,20 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-12">
+
+                  <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 3) { ?>
+
                   <a href="generar-ventas.php" class="btn btn-primary btn-md"> <i class="fa fa-plus"></i> Generar ventas</a>
+
+                  <?php } ?>
+
                   <hr>
                   <div class="table-responsive-md" id="mostrarTablaCompras"></div>
               </div>
             </div>
           </div>
+
+          <?php } ?>
           <!-- Container-fluid Ends-->
         </div>
         <?php include 'secciones/pie-pagina.php'; // Incluimos el pie de pagina de la plantilla. ?>

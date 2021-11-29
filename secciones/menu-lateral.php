@@ -19,26 +19,46 @@
                       <img src="imagenes/uploads/<?php echo $resultado[12]; ?>" class="img-fluid logoLeft" alt="">
                   </li>
 
+                  <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2 || $_SESSION["permiso"] == 3) { ?>
+
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="inicio.php"><i data-feather="square"> </i><span>Inicio</span></a></li>
+
+                  <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2) { ?>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="clientes.php"><i data-feather="user-check"> </i><span>Clientes</span></a></li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="proveedores.php"><i data-feather="user-plus"> </i><span>Proveedores</span></a></li>
 
+                  <?php } ?>
+
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="sliders"></i><span>Almacen</span></a>
                     <ul class="sidebar-submenu">
+
+                      <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2) { ?>
+
                       <li><a href="categorias.php">Categorias</a></li>
                       <li><a href="productos.php">Productos</a></li>
+
+                      <?php } ?>
+
                       <li><a href="inventarios.php">Inventario</a></li>
                     </ul>
                   </li>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="shopping-cart"></i><span>Ventas</span></a>
                     <ul class="sidebar-submenu">
+
+                      <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 3) { ?>
+
                       <li><a href="generar-ventas.php">Generar Venta</a></li>
+
+                      <?php } ?>
+
                       <li><a href="ventas.php">Administrar Ventas</a></li>
                     </ul>
                   </li>
+
+                  <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2) { ?>
 
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#"><i data-feather="shopping-bag"></i><span>Compras</span></a>
                     <ul class="sidebar-submenu">
@@ -47,8 +67,13 @@
                     </ul>
                   </li>
 
+                  <?php } ?>
+
                   <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="desarrolladora.php"><i data-feather="github"> </i><span>Desarrolladora</span></a></li>
 
+                <?php } else {
+                  echo '<li class="sidebar-list"><a href="cierre.php" class="btn btn-info d-grid col-9 mx-auto mt-3">SALIR</a></li>';
+                } ?>
                 </ul>
               </div>
               <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

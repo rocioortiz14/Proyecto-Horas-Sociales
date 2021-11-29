@@ -16,6 +16,9 @@
             <div class="logo-wrapper"><a href="inicio.php"><img class="img-fluid" src="assets/images/logo/logo.png" alt=""></a></div>
             <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
           </div>
+
+          <?php if ($_SESSION["permiso"] == 1) { ?>
+
           <div class="left-header col horizontal-wrapper ps-0">
             <ul class="horizontal-menu">
               <li class="level-menu outside"><a class="nav-link" href="#!"><i data-feather="settings"></i><span> Configuraciones</span></a>
@@ -29,6 +32,21 @@
               </li>
             </ul>
           </div>
+
+          <?php } ?>
+
+          <?php if ($_SESSION["permiso"] == 2) { ?>
+
+          <div class="left-header col horizontal-wrapper ps-0">
+            <ul class="horizontal-menu">
+              <li class="level-menu outside"><a class="nav-link" href="empleados.php"><i data-feather="award"></i><span> Empleados</span></a></li>
+            </ul>
+          </div>
+
+          <?php } ?>
+
+          <?php if ($_SESSION["permiso"] == 1 || $_SESSION["permiso"] == 2 || $_SESSION["permiso"] == 3) { ?>
+
           <div class="nav-right col-8 pull-right right-header p-0">
             <ul class="nav-menus">
               <li class="onhover-dropdown">
@@ -65,6 +83,9 @@
               </li>
             </ul>
           </div>
+
+          <?php } ?>
+
         </div>
       </div>
       <!-- Page Header Ends -->
