@@ -52,7 +52,7 @@
                   <?php } ?>
 
                   <hr>
-                  <div class="table-responsive-md" id="mostrarTablaCompras"></div>
+                  <div class="table-responsive-md" id="mostrarTablaVentas"></div>
               </div>
             </div>
           </div>
@@ -66,5 +66,103 @@
     <?php include 'secciones/scripts.php'; // Incluimos los archivos js a la plantilla. ?>
     <script src="assets/js/scrollbar/simplebar.js"></script>
     <script src="assets/js/scrollbar/custom.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+          $(document).on("click",".btnDelete",function(){
+            var id = $(this).attr("id");
+            Swal.fire({
+               title: "Advertencia",
+               text: "Esta seguro que desea anular esta venta ?",
+               showCancelButton: true,
+               icon: 'warning',
+               cancelButtonColor: '#d33',
+             }).then(function(res) {
+                   if(res.value){
+                     anular(id);
+                   }
+               });
+          });
+          // Ejecutamos función que mediante AJAX muestra los datos de los usuarios en pantalla.
+          mostrarVentas();
+
+          });
+          // Función encargada de mostrar los usuarios en pantalla.
+          function mostrarVentas() {
+              $.ajax({
+                url:"procedimientos/Ventas.php",
+                type: "POST",
+                data: {action:"view"},
+                success:function(response){
+                  $("#mostrarTablaVentas").html(response);
+                  $("#tblVentas").DataTable({
+                    "iDisplayLength": 10,
+                      "language":{
+                        "sProcessing":     "Procesando...",
+                        "sLengthMenu":     "Mostrar _MENU_ registros",
+                        "sZeroRecords":    "No se encontraron resultados",
+                        "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix":    "",
+                        "sSearch":         "Buscar venta:",
+                        "sUrl":            "",
+                        "sInfoThousands":  ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                          "sFirst":    "Primero",
+                          "sLast":     "Último",
+                          "sNext":     "Siguiente",
+                          "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                          "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                      }
+                  });
+                },
+                error: function(e){
+                  console.log(e);
+                }
+              });
+          } // Aquí termina la función encargada de mostrar las ventas realizadas.
+
+
+        function anular(id){
+          $.ajax({
+            type: "POST",
+            data : {
+              action: "anular",
+              id: id
+            },
+            url: "procedimientos/Ventas.php",
+            dataType: "json",
+            success: function(data){
+              if(data.code  == 1){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito!',
+                    text: 'Venta anulada!'
+                }).then(function(result) {
+                    mostrarVentas();
+                });
+              } else if(data.code  == 3){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops!',
+                    text: 'No se anularon los detalles de la venta!'
+                });
+              } else if(data.code  == 0){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops!',
+                    text: 'No se anulo la venta!'
+                });
+              }
+            }
+          })
+        }
+    </script>
   </body>
 </html>

@@ -102,6 +102,7 @@
                               <th class="text-center" scope="col">Precio compra</th>
                               <th class="text-center" scope="col">Precio venta</th>
                               <th class="text-center" scope="col">Sub-total</th>
+                              <th class="text-center" scope="col">Vencimiento</th>
                               <th class="text-center" scope="col"></th>
                             </tr>
                           </thead>

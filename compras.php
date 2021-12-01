@@ -62,10 +62,24 @@
     <script src="assets/js/scrollbar/custom.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-
+          $(document).on("click",".btnDelete",function(){
+            var id = $(this).attr("id");
+            Swal.fire({
+               title: "Advertencia",
+               text: "Esta seguro que desea anular esta compra ?",
+               showCancelButton: true,
+               icon: 'warning',
+               cancelButtonColor: '#d33',
+             }).then(function(res) {
+                   if(res.value){
+                     anular(id);
+                   }
+               });
+          });
           // Ejecutamos función que mediante AJAX muestra los datos de los usuarios en pantalla.
           mostrarCompras();
 
+          });
           // Función encargada de mostrar los usuarios en pantalla.
           function mostrarCompras() {
               $.ajax({
@@ -109,7 +123,40 @@
           } // Aquí termina la función encargada de mostrar las compras realizadas.
 
 
-        });
+        function anular(id){
+          $.ajax({
+            type: "POST",
+            data : {
+              action: "anular",
+              id: id
+            },
+            url: "procedimientos/Compras.php",
+            dataType: "json",
+            success: function(data){
+              if(data.code  == 1){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito!',
+                    text: 'Compra anulada!'
+                }).then(function(result) {
+                    mostrarCompras();
+                });
+              } else if(data.code  == 3){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops!',
+                    text: 'No se anularon los detalles de la compra!'
+                });
+              } else if(data.code  == 0){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops!',
+                    text: 'No se anulo la compra!'
+                });
+              }
+            }
+          })
+        }
     </script>
   </body>
 </html>

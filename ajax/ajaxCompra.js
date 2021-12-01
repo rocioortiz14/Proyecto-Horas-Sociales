@@ -99,6 +99,7 @@ $(document).ready(function() {
           tr += '<td style="width: 14%;"> <input class="form-control form-control-sm numeric pc" type="text"> </td>';
           tr += '<td style="width: 14%;"> <input class="form-control form-control-sm numeric pv" type="text"> </td>';
           tr += '<td style="width: 15%;" class="stot">$ </td>';
+          tr += '<td style="width: 15%;"><input class="form-control form-control-md vencimiento" type="date"></td>';
           tr += '<td style="width: 3%;"> <a class="text-danger delete"> <i class="fa fa-trash fa-lg"></i> </a> </td>';
         tr += '</tr>';
         $("#listaProductos").append(tr);
@@ -130,6 +131,7 @@ $(document).on("click",".delete",function(){
   $(this).parents("tr").remove();
   renumerar();
 });
+
 $(document).on("keyup",".cantidad",function(evt){
   var valor = $(this).val();
   if(evt.keyCode == 13 && entro){
@@ -153,9 +155,17 @@ $(document).on("keyup",".pv",function(evt){
   var valor = $(this).val();
   if(evt.keyCode == 13){
     if(valor != "" && parseFloat(valor)>0){
-      $("#productos").select2("open");
+      $(this).parents("tr").find(".vencimiento").focus();
       totales();
     }
+  }
+});
+var prclick = 0;
+$(document).on("keyup",".vencimiento",function(evt){
+  prclick =1;
+  if(evt.keyCode == 13 && prclick){
+      $("#productos").select2("open");
+      totales();
   }
 });
 $(document).on("click","#clean_table",function(evt){
@@ -213,6 +223,7 @@ function guardar_compra(){
     var cantidad = parseFloat($(this).find(".cantidad").val());
     var pv = parseFloat($(this).find(".pv").val());
     var pc = parseFloat($(this).find(".pc").val());
+    var vencimiento = $(this).find(".vencimiento").val();
     var stot = parseFloat($(this).find(".stot").text().split("$")[1]);
     if(cantidad >0 && pc >0 && pv >0){
       var prod = new Object();
@@ -221,6 +232,7 @@ function guardar_compra(){
       prod.pc = pc;
       prod.pv = pv;
       prod.stot = stot;
+      prod.vencimiento = vencimiento;
       prod_item = JSON.stringify(prod);
       productos.push(prod_item);
     } else{

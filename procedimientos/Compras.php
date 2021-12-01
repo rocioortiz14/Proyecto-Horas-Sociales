@@ -13,7 +13,8 @@ $cargar = $conexion -> prepare("SELECT
                                 c.c_comprobante,
                                 c.c_serie,
                                 c.c_numero,
-                                c.c_ttl
+                                c.c_ttl,
+                                c.c_estado
                                 FROM tbl_compra AS c
                                 LEFT JOIN tbl_proveedores AS p ON c.c_proveedor = p.prv_id
                                 ORDER BY c.c_id ASC");
@@ -29,10 +30,11 @@ if (isset($_POST['action']) && $_POST['action'] == "view") {
       <thead>
         <th class="bg-primary text-white text-center" style="width: 5%;">ID</th>
         <th class="bg-primary text-white text-center" style="width: 10%;">Fecha</th>
-        <th class="bg-primary text-white text-center" style="width: 30%;">Proveedor</th>
+        <th class="bg-primary text-white text-center" style="width: 25%;">Proveedor</th>
         <th class="bg-primary text-white text-center" style="width: 10%;">Comprobante</th>
-        <th class="bg-primary text-white text-center" style="width: 13%;">Serie</th>
-        <th class="bg-primary text-white text-center" style="width: 12%;">N° compra</th>
+        <th class="bg-primary text-white text-center" style="width: 10%;">Estado</th>
+        <th class="bg-primary text-white text-center" style="width: 10%;">Serie</th>
+        <th class="bg-primary text-white text-center" style="width: 10%;">N° compra</th>
         <th class="bg-primary text-white text-center" style="width: 10%;">Total compra</th>
         <th class="bg-primary text-white text-center" style="width: 10%;"></th>
       </thead>
@@ -45,6 +47,7 @@ if (isset($_POST['action']) && $_POST['action'] == "view") {
                 echo '<td class="text-center">' . $datos[1] . '</td>';
                 echo '<td class="text-justify">' . $datos[2] . '</td>';
                 echo '<td class="text-center">' . $datos[3] . '</td>';
+                echo '<td class="text-center">' . $datos[7] . '</td>';
                 echo '<td class="text-center">' . $datos[4] . '</td>';
                 echo '<td class="text-center">' . $datos[5] . '</td>';
                 echo '<td class="text-center">$' . $datos[6] . '</td>';
@@ -54,8 +57,11 @@ if (isset($_POST['action']) && $_POST['action'] == "view") {
                                   <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
                                   <ul class="dropdown-menu">
                                       <a href="detalleCompras.php?identificador='.$datos[0].'" class="dropdown-item text-dark btnDetail" id="'.$datos[0].'" title="Detalle compra"><i class="fa fa-edit text-success"></i> Detalle</a>
-                                      <a href="#" class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Anular compra"><i class="fa fa-trash text-danger"></i> Anular</a>
-                                  </ul>
+                                      ';
+                                      if($datos[7] == "FINALIZADA"){
+                                        echo '<a class="dropdown-item text-dark btnDelete" id="'.$datos[0].'" title="Anular compra"><i class="fa fa-trash text-danger"></i> Anular</a>';
+                                      }
+                                  echo '</ul>
                               </div>
                           </center>
                       </td>';
@@ -112,6 +118,17 @@ if (isset($_POST['action']) && $_POST['action'] == "insert") {
       $ins_dt->bindParam(':stot', $producto["stot"], PDO::PARAM_STR);
 
       $dt = $ins_dt->execute();
+      if($producto["vencimiento"] !=""){
+        $ins_dtl = $conexion->prepare("INSERT INTO tbl_lote(l_compra,l_producto,l_unidades,l_disponibles,l_vencimiento)
+                                                           VALUES (:compra, :producto, :qty, :qty,
+                                                                   :vencimiento)");
+        $ins_dtl->bindParam(':compra', $compra,PDO::PARAM_INT);
+        $ins_dtl->bindParam(':producto', $producto["id"], PDO::PARAM_INT);
+        $ins_dtl->bindParam(':qty', $producto["cantidad"], PDO::PARAM_STR);
+        $ins_dtl->bindParam(':vencimiento', $producto["vencimiento"], PDO::PARAM_STR);
+        $dtl = $ins_dtl->execute();
+      }
+      $dt = $ins_dt->execute();
       if(!$dt){
         $err = 1;
       } else{
@@ -129,6 +146,59 @@ if (isset($_POST['action']) && $_POST['action'] == "insert") {
         if(!$update_stk){
             $err = 1;
         }
+      }
+    }
+    if(!$err){
+      $conexion->commit();
+      $JSON["code"] = 1;
+    } else{
+      $conexion->rollback();
+      $JSON["code"] = 3;
+    }
+  } else {
+    $conexion->rollback();
+    $JSON["code"] = 0;
+  }
+  echo json_encode($JSON);
+}
+
+if (isset($_POST['action']) && $_POST['action'] == "anular") {
+  $JSON = array();
+  $insertar = 0;
+
+  $id = $_POST['id'];
+
+  $conexion->beginTransaction();
+  $update = $conexion -> prepare("UPDATE tbl_compra SET c_estado = 'Anulada' WHERE c_id=:id");
+  // Pasamos valores, con sentencias preparadas, para luego ejecutar.
+  $update->bindParam(':id', $id, PDO::PARAM_INT);
+  $updatel = $conexion -> prepare("UPDATE tbl_lote SET l_estado = 'Anulado', l_unidades='0', l_disponibles='0' WHERE l_compra=:id");
+  // Pasamos valores, con sentencias preparadas, para luego ejecutar.
+  $updatel->bindParam(':id', $id, PDO::PARAM_INT);
+  $updatel->execute();
+  if ($update->execute()) {
+    $err = 0;
+    $cargar = $conexion->prepare("SELECT dt.cd_producto, dt.cd_qty, p.p_stock
+                                  FROM tbl_compra_detalle AS dt
+                                  JOIN tbl_productos AS p ON p.p_id = dt.cd_producto WHERE dt.cd_compra=:id");
+
+    $cargar -> execute(["id" => $id]);
+    /*Almacenamos el resultado de fetchAll en una variable*/
+    $arrayDatos = $cargar -> fetchAll();
+
+    foreach ($arrayDatos as $producto) {
+      $idp = $producto[0];
+      $qty = $producto[2];
+      $qtydesc = $producto[1];
+      $qtyres = $qty - $qtydesc;
+      $upd_dt = $conexion->prepare("UPDATE tbl_productos SET p_stock=:qty WHERE p_id = :idp");
+
+      $upd_dt->bindParam(':qty', $qtyres, PDO::PARAM_STR);
+      $upd_dt->bindParam(':idp', $idp, PDO::PARAM_INT);
+
+      $dt = $upd_dt->execute();
+      if(!$dt){
+        $err = 1;
       }
     }
     if(!$err){

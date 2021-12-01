@@ -23,7 +23,7 @@
                       <a href="ventas.php" class="btn btn-info btn-sm"> <i class="fa fa-reply"></i> REGRESAR</a>
                   </div>
                   <div class="col-9 mt-4">
-                      <a href="#" class="btn btn-danger btn-sm float-end"> <strong>(F2)</strong> FACTURAR</a>
+                      <a id="facturar" class="btn btn-danger btn-sm float-end"> <strong>(F2)</strong> FACTURAR</a>
                       <a href="#" class="btn btn-success btn-sm float-end me-1" id="btnAdd" data-bs-toggle="modal" data-bs-target="#agregarClModal"> <strong>(F1)</strong> REGISTRAR CLIENTE</a>
                   </div>
                   <div class="col-4 mt-3">
@@ -50,7 +50,7 @@
                   <div class="col-2 mt-3">
                       <div class="form-group">
                           <label for="fechaC" class="fw-bold text-dark">Fecha venta(*): </label>
-                          <input class="form-control form-control-md" type="date" name="fechaC" id="fechaC">
+                          <input class="form-control form-control-md" type="date" name="fechaV" id="fechaV">
                       </div>
                   </div>
                   <div class="col-2 mt-3">
@@ -66,9 +66,18 @@
                       </div>
                   </div>
                   <div class="col-6 mt-3">
-                      <div class="form-group">
-                          <input class="form-control form-control-md" type="text" name="buscadorP" id="buscadorP" placeholder="Seleccione productos...">
-                      </div>
+                    <div class="form-group">
+                      <select class="form-control select2 text-dark" name="productos" id="productos" style="width: 100%;">
+                          <option value="">Seleccionar...</option>
+                          <?php
+                              $stmt1 = $conexion -> query("SELECT * FROM tbl_productos");
+                              // and somewhere later:
+                              while ($data = $stmt1-> fetch()) {
+                                  echo '<option class="text-white" value="'.$data[0].'" data-nombre="'.$data[1].'">'.$data[1].' | '.$data[5].'</option>';
+                              }
+                          ?>
+                      </select>
+                    </div>
                   </div>
                   <div class="col-4 mt-3">
                       <div class="form-group">
@@ -80,7 +89,7 @@
                   </div>
                   <div class="col-1 mt-3">
                       <div class="form-group media-body icon-state">
-                        <label class="switch float-start"><input type="checkbox" checked="" data-bs-original-title="" title=""><span class="switch-state bg-primary"></span></label>
+                        <label class="switch float-start"><input id="is_iva" type="checkbox" checked="" data-bs-original-title="" title=""><span class="switch-state bg-primary"></span></label>
                       </div>
                   </div>
                   <div class="col-9 mt-3">
@@ -89,37 +98,15 @@
                             <tr>
                               <th class="text-center" scope="col">#</th>
                               <th class="text-left" scope="col">Producto</th>
+                              <th class="text-center" scope="col">Stock</th>
                               <th class="text-center" scope="col">Cantidad</th>
                               <th class="text-center" scope="col">Precio venta</th>
                               <th class="text-center" scope="col">Sub-total</th>
                               <th class="text-center" scope="col"></th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <th style="width: 3%;" scope="row">1</th>
-                              <td style="width: 55%;">Maisena</td>
-                              <td style="width: 10%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 15%;">$ </td>
-                              <td style="width: 3%;"> <a href="#" class="text-danger"> <i class="fa fa-trash fa-lg"></i> </a> </td>
-                            </tr>
-                            <tr>
-                              <th style="width: 3%;" scope="row">1</th>
-                              <td style="width: 55%;">Azucar</td>
-                              <td style="width: 10%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 15%;">$ </td>
-                              <td style="width: 3%;"> <a href="#" class="text-danger"> <i class="fa fa-trash fa-lg"></i> </a> </td>
-                            </tr>
-                            <tr>
-                              <th style="width: 3%;" scope="row">1</th>
-                              <td style="width: 55%;">Sal</td>
-                              <td style="width: 10%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 14%;"> <input class="form-control form-control-sm" type="text" name=""> </td>
-                              <td style="width: 15%;">$ </td>
-                              <td style="width: 3%;"> <a href="#" class="text-danger"> <i class="fa fa-trash fa-lg"></i> </a> </td>
-                            </tr>
+                          <tbody id="listaProductos">
+
                           </tbody>
                       </table>
                       <hr class="text-success">
@@ -130,12 +117,12 @@
                   </div>
                   <div class="col-3 mt-3">
                     <div class="alert" style="background-color: #e5e5e5;">
-                        <p><strong class="text-dark">Cantidad productos: </strong> <em class="float-end text-dark">3</em> </p>
-                        <p><strong class="text-dark">Valor de la venta: </strong> <em class="float-end text-dark">$</em> </p>
-                        <p><strong class="text-dark">IVA(%): </strong> <em class="float-end text-dark">$</em> </p>
+                        <p><strong class="text-dark">Cantidad productos: </strong> <em class="float-end text-dark" id="tqty">0</em> </p>
+                        <p><strong class="text-dark">Valor de la compra: </strong> <em class="float-end text-dark" id="tpc">$</em> </p>
+                        <p><strong class="text-dark">IVA(%): </strong> <em class="float-end text-dark" id="tiva">$</em> </p>
                     </div>
                     <div class="alert" role="alert" style="background-color: #afafaf;">
-                        <p><strong class="text-dark">Total a pagar: </strong> <em class="float-end">$</em> </p>
+                        <p><strong class="text-dark">Total a pagar: </strong> <em class="float-end" id="ttl">$</em> </p>
                     </div>
                   </div>
               </div>
