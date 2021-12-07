@@ -116,6 +116,16 @@
           </div>
           <!-- Container-fluid Ends-->
 
+          <!-- Contenedor tabla productos en stock bajo y vendidos-->
+          <div class="row">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+
+              </div>
+          </div>
+
           <?php } ?>
 
         </div>
