@@ -118,10 +118,49 @@
 
           <!-- Contenedor tabla productos en stock bajo y vendidos-->
           <div class="row">
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+              <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <?php
+                    $query = $conexion -> prepare("SELECT v.v_id, p.p_producto, SUM(v.v_qty)
+                                                  FROM tbl_venta AS v
+                                                  LEFT JOIN tbl_venta_detalle AS vd ON v.v_id = vd.vd_venta
+                                                  LEFT JOIN tbl_productos AS p ON vd.vd_producto = p.p_id
+                                                  GROUP BY v.v_id
+                                                  ORDER BY SUM(v.v_qty) DESC
+                                                  LIMIT 0 , 10");
 
+                    $query -> execute();
+                    $results = $query -> fetchall();
+
+                    if (count($results) > 0) {
+                ?>
+                    <div class="alert alert-primary">
+                        <center> <strong> PRODUCTOS MÁS VENDIDOS</strong> </center>
+                    </div>
+                    <table class="table table-hover table-sm" id="tblProductosMasVendidos">
+                      <thead>
+                        <th class="bg-primary text-white text-center" style="width: 10%;">ID</th>
+                        <th class="bg-primary text-white text-center" style="width: 60%;">Producto</th>
+                        <th class="bg-primary text-white text-center" style="width: 30%;">Cantidad</th>
+                      </thead>
+                      <tbody>
+                <?php
+                          foreach ($results as $datos) {
+                              echo '<tr>';
+                                echo '<td class="text-center">' . $datos[0] . '</td>';
+                                echo '<td class="text-center">' . $datos[1] . '</td>';
+                                echo '<td class="text-center">' . $datos[2] . '</td>';
+                              echo ' </tr>';
+                          }
+                ?>
+                      </tbody>
+                    </table>
+                <?php
+                  } else{
+                    echo '<div class="alert alert-primary" role="alert"> Sin productos vendidos!!!</div>';
+                  }
+                ?>
               </div>
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+              <div class="col-12 col-sm-8 col-md-8 col-lg-8">
 
               </div>
           </div>

@@ -46,7 +46,7 @@
               <div class="alert alert-primary" role="alert"> Hay dos formas de realizar el diseño de una aplicación:
                 La primera es el hacerlo tan sencillo que sea obvio para todos que no tiene deficiencias y
                  la segunda es el hacerlo tan complicado que no queden deficiencias obvias”. Tony Hoare
-               </div>
+              </div>
 
               <div class="col-12 mt-2">
                 <div class="alert alert-primary text-center">
