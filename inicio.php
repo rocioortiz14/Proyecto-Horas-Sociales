@@ -124,7 +124,7 @@
                                                   FROM tbl_venta AS v
                                                   LEFT JOIN tbl_venta_detalle AS vd ON v.v_id = vd.vd_venta
                                                   LEFT JOIN tbl_productos AS p ON vd.vd_producto = p.p_id
-                                                  GROUP BY v.v_id
+                                                  GROUP BY p.p_producto
                                                   ORDER BY SUM(v.v_qty) DESC
                                                   LIMIT 0 , 10");
 
@@ -133,14 +133,14 @@
 
                     if (count($results) > 0) {
                 ?>
-                    <div class="alert alert-primary">
+                    <div class="alert alert-light">
                         <center> <strong> PRODUCTOS MÁS VENDIDOS</strong> </center>
                     </div>
                     <table class="table table-hover table-sm" id="tblProductosMasVendidos">
                       <thead>
-                        <th class="bg-primary text-white text-center" style="width: 10%;">ID</th>
-                        <th class="bg-primary text-white text-center" style="width: 60%;">Producto</th>
-                        <th class="bg-primary text-white text-center" style="width: 30%;">Cantidad</th>
+                        <th class="bg-success text-white text-center" style="width: 10%;">ID</th>
+                        <th class="bg-success text-white text-center" style="width: 60%;">Producto</th>
+                        <th class="bg-success text-white text-center" style="width: 30%;">Cantidad</th>
                       </thead>
                       <tbody>
                 <?php
@@ -161,7 +161,51 @@
                 ?>
               </div>
               <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                <?php
+                    $query2 = $conexion -> prepare("SELECT DISTINCT
+                                                    p.p_id,
+                                                    l.l_id,
+                                                    CONCAT(p.p_producto,' - ',p.p_desc),
+                                                    l.l_vencimiento
+                                                    FROM tbl_lote AS l
+                                                    LEFT JOIN tbl_productos AS p ON l.l_producto = p.p_id
+                                                    LEFT JOIN tbl_compra AS c ON l.l_compra = c.c_id
+                                                    WHERE l.l_vencimiento BETWEEN (SELECT CURDATE()) AND (DATE_ADD(CURDATE(), INTERVAL 2 MONTH))
+                                                    ORDER BY l.l_vencimiento DESC LIMIT 0,10");
 
+                    $query2 -> execute();
+                    $results2 = $query2 -> fetchall();
+
+                    if (count($results2) > 0) {
+                ?>
+                    <div class="alert alert-light">
+                        <center> <strong> PRODUCTOS PRÓXIMOS A VENCER EN DOS MESES</strong> </center>
+                    </div>
+                    <table class="table table-hover table-sm" id="tblProductosMasVendidos">
+                      <thead>
+                        <th class="bg-secondary text-white text-center" style="width: 10%;">ID</th>
+                        <th class="bg-secondary text-white text-center" style="width: 10%;">Correlativo</th>
+                        <th class="bg-secondary text-white text-center" style="width: 50%;">Producto</th>
+                        <th class="bg-secondary text-white text-center" style="width: 30%;">Fecha vencimiento</th>
+                      </thead>
+                      <tbody>
+                <?php
+                          foreach ($results2 as $datos2) {
+                              echo '<tr>';
+                                echo '<td class="text-center">' . $datos2[0] . '</td>';
+                                echo '<td class="text-center">' . $datos2[1] . '</td>';
+                                echo '<td class="text-left">' . $datos2[2] . '</td>';
+                                echo '<td class="text-center">' . $datos2[3] . '</td>';
+                              echo ' </tr>';
+                          }
+                ?>
+                      </tbody>
+                    </table>
+                <?php
+                  } else{
+                    echo '<div class="alert alert-primary" role="alert"> Sin productos próximos a vencer!!!</div>';
+                  }
+                ?>
               </div>
           </div>
 
